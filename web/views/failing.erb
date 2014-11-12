@@ -1,0 +1,41 @@
+<div class="row">
+  <div class="small-12 columns">
+    <h1><%= @list.total %> Failing Job<%= @list.total == 1 ? "" : "s" %></h1>
+  </div>
+</div>
+<div class="row">
+  <div class="small-12 columns">
+    <table>
+      <thead>
+        <tr>
+          <th>Next Run</th>
+          <th>Failures</th>
+          <th>Job</th>
+          <th>Queue</th>
+          <th>Args</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @list.page_jobs.each do |job| %>
+          <tr>
+            <td><%= job.run_at.utc %></td>
+            <td><%= job.error_count %></td>
+            <td><%= job.job_class %></td>
+            <td><%= job.queue %></td>
+            <td><pre><%= job.args.map(&:inspect).join(', ') %></pre></td>
+            <td>
+              <form action="<%= to "/jobs/#{job.job_id}" %>" method="post">
+                <input type="hidden" name="_method" value="delete" />
+                <input type="hidden" name="queue" value="<%= job.queue %>" />
+                <input type="hidden" name="run_at" value="<%= job.run_at %>" />
+                <input type="hidden" name="priority" value="<%= job.priority %>" />
+                <button class="plain"><i class="fa fa-trash"></i></button>
+              </form>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
