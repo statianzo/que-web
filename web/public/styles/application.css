@@ -1,0 +1,43 @@
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  margin-top: 1em;
+}
+
+.dashboard-stat {
+  text-align: center;
+  padding: 1em;
+  display: table;
+  width: 100%;
+}
+
+.dashboard-stat .cell {
+  display: table-cell;
+  vertical-align: middle;
+  height: 200px;
+}
+
+.dashboard-stat h2 {
+  font-size: 1em;
+  font-weight: normal;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.dashboard-stat.scheduled {
+  background: #828E8C;
+}
+
+.dashboard-stat.running {
+  background: #CFD0C1;
+}
+
+.dashboard-stat.failing {
+  background: #E8866C;
+}
+
+.dashboard-value {
+  font-size: 5em;
+  line-height: 1em;
+}
