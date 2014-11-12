@@ -8,8 +8,9 @@ module Que
     set :views, proc { File.expand_path("views", root) }
 
     get "/" do
-      @job_stats = Que.job_stats
-      @worker_states = Que.worker_states
+      job_stats = Que.job_stats
+      failing_count = Que.execute("SELECT count(*) FROM que_jobs WHERE error_count > 0")[0]["count"]
+      @dashboard = Viewmodels::Dashboard.new(job_stats, failing_count)
       erb :index
     end
 
@@ -20,3 +21,5 @@ module Que
     end
   end
 end
+
+require "que/web/viewmodels"
