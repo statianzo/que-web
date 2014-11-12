@@ -1,6 +1,6 @@
-# Que::Web
+# que-web
 
-TODO: Write a gem description
+que-web is a web UI to the [que](https://github.com/chanks/que) job queue.
 
 ## Installation
 
@@ -20,12 +20,19 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+In your `config.ru` add
 
-## Contributing
+```ruby
+require "que/web"
 
-1. Fork it ( https://github.com/[my-github-username]/que-web/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
+map "/que" do
+  run Que::Web
+end
+```
+
+Or in Rails `config/routes.rb`
+
+```ruby
+require "que/web"
+mount Que::Web => "/que"
+```
