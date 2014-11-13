@@ -1,0 +1,29 @@
+<div class="row">
+  <div class="small-12 columns">
+    <h1><%= @list.total %> Running Job<%= @list.total == 1 ? "" : "s" %></h1>
+  </div>
+</div>
+<div class="row">
+  <div class="small-12 columns">
+    <table>
+      <thead>
+        <tr>
+          <th>Started</th>
+          <th>Job</th>
+          <th>Queue</th>
+          <th>Args</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @list.page_jobs.each do |job| %>
+          <tr>
+            <td><%= job.pg_state_changed_at.utc %></td>
+            <td><%= job.job_class %></td>
+            <td><%= job.queue %></td>
+            <td><pre><%= job.args.map(&:inspect).join(', ') %></pre></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -10,40 +10,20 @@ describe Que::Web::Viewmodels::JobList do
      "queue"=>"foo"
     }
   }
-  let(:subject) { Que::Web::Viewmodels::JobList.new([job], 1, 3) }
+  let(:pager) { Que::Web::Pager.new(1,10,105) }
+  let(:subject) { Que::Web::Viewmodels::JobList.new([job], pager) }
 
   it "maps jobs" do
     subject.page_jobs.length.must_equal 1
     subject.page_jobs.first.queue.must_equal "foo"
   end
 
-  it "provides next page" do
-    subject.next_page.must_equal 4
+  it "exposes pager" do
+    subject.pager.must_equal pager
   end
 
-  it "provides prevous page" do
-    subject.prev_page.must_equal 2
+  it "maps total from pager" do
+    subject.total.must_equal pager.total
   end
 
-  it "has next when full page" do
-    subject.page_jobs.concat [job] * 9
-    subject.has_next?.must_equal true
-  end
-
-  it "does not have next not full page" do
-    subject.has_next?.must_equal false
-  end
-
-  it "has prev page when greater than 0" do
-    subject.has_prev?.must_equal true
-  end
-
-  it "does not have prev page when equal to 0" do
-    list = subject.class.new([], 1, 0) 
-    list.has_prev?.must_equal false
-  end
-
-  it "does not have next not full page" do
-    subject.has_next?.must_equal false
-  end
 end

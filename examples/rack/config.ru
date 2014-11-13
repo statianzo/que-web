@@ -33,6 +33,14 @@ map '/slow' do
   }
 end
 
+
+map '/delayslow' do
+  run lambda { |env|
+    SlowJob.enqueue 'arg1', {name: 'delayslow', age: 20}, run_at: Time.now + 10
+    [200, {}, ['Failing job queued']]
+  }
+end
+
 run lambda { |env|
   [200, {}, ['Hello']]
 }

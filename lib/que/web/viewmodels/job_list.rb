@@ -1,29 +1,13 @@
 module Que::Web::Viewmodels
   class JobList
-    PAGE_SIZE = 10
+    extend Forwardable
+    attr_reader :page_jobs, :pager
 
-    attr_reader :page_jobs, :total, :page
+    def_delegators :@pager, :total, :next_page, :prev_page, :current_page, :page_count
 
-    def initialize(page_jobs, total, page)
+    def initialize(page_jobs, pager)
       @page_jobs = page_jobs.map{|j| Job.new(j)}
-      @total = total
-      @page = page
-    end
-
-    def next_page
-      page.succ
-    end
-
-    def prev_page
-      page.pred
-    end
-
-    def has_next?
-      @page_jobs.length >= PAGE_SIZE
-    end
-
-    def has_prev?
-      @page > 0
+      @pager = pager
     end
   end
 end

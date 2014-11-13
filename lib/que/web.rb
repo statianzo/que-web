@@ -2,6 +2,8 @@ require "sinatra"
 
 module Que
   class Web < Sinatra::Base
+    PAGE_SIZE = 10
+
     use Rack::MethodOverride
 
     set :root, File.expand_path("../../../web", __FILE__)
@@ -9,26 +11,47 @@ module Que
     set :views, proc { File.expand_path("views", root) }
 
     get "/" do
-      job_stats = Que.job_stats
-      failing_count = Que.execute("SELECT count(*) FROM que_jobs WHERE error_count > 0")[0]["count"]
-      @dashboard = Viewmodels::Dashboard.new(job_stats, failing_count)
+      stats = Que.execute SQL[:dashboard_stats]
+      @dashboard = Viewmodels::Dashboard.new(stats[0])
       erb :index
     end
 
+    get "/running" do
+      worker_states = Que.worker_states
+      pager = get_pager worker_states.count
+      @list = Viewmodels::JobList.new(worker_states, pager)
+      erb :running
+    end
+
     get "/failing" do
-      failing_count = Que.execute("SELECT count(*) FROM que_jobs WHERE error_count > 0")[0]["count"]
-      failing_jobs = Que.execute("SELECT * FROM que_jobs WHERE error_count > 0")
-      @list = Viewmodels::JobList.new(failing_jobs, failing_count, 0)
+      stats = Que.execute SQL[:dashboard_stats]
+      pager = get_pager stats[0]["failing"]
+      failing_jobs = Que.execute SQL[:failing_jobs], [pager.page_size, pager.offset]
+      @list = Viewmodels::JobList.new(failing_jobs, pager)
       erb :failing
+    end
+
+    get "/scheduled" do
+      stats = Que.execute SQL[:dashboard_stats]
+      pager = get_pager stats[0]["scheduled"]
+      scheduled_jobs = Que.execute SQL[:scheduled_jobs], [pager.page_size, pager.offset]
+
+      @list = Viewmodels::JobList.new(scheduled_jobs, pager)
+      erb :scheduled
     end
 
     delete "/jobs/:id" do |id|
       job_id = id.to_i
       if job_id > 0
-        Que.execute "DELETE FROM que_jobs WHERE job_id = $1::bigint", [job_id]
+        Que.execute SQL[:delete_job], [job_id]
       end
 
       redirect request.referrer, 303
+    end
+
+    def get_pager(record_count)
+      page = (params[:page] || 1).to_i
+      Pager.new(page, PAGE_SIZE, record_count)
     end
 
     helpers do
@@ -46,3 +69,5 @@ module Que
 end
 
 require "que/web/viewmodels"
+require "que/web/sql"
+require "que/web/pager"

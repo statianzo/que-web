@@ -1,6 +1,6 @@
 <div class="row">
   <div class="small-12 columns">
-    <h1><%= @list.total %> Failing Job<%= @list.total == 1 ? "" : "s" %></h1>
+    <h1><%= @list.total %> Scheduled Job<%= @list.total == 1 ? "" : "s" %></h1>
   </div>
 </div>
 <div class="row">
@@ -8,8 +8,7 @@
     <table>
       <thead>
         <tr>
-          <th>Next Run</th>
-          <th>Failures</th>
+          <th>Run At</th>
           <th>Job</th>
           <th>Queue</th>
           <th>Args</th>
@@ -20,7 +19,6 @@
         <% @list.page_jobs.each do |job| %>
           <tr>
             <td><%= job.run_at.utc %></td>
-            <td><%= job.error_count %></td>
             <td><%= job.job_class %></td>
             <td><%= job.queue %></td>
             <td><pre><%= job.args.map(&:inspect).join(', ') %></pre></td>
@@ -34,7 +32,6 @@
         <% end %>
       </tbody>
     </table>
-
   </div>
 </div>
 <div class="row">
