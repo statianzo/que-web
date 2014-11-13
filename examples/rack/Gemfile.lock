@@ -1,7 +1,7 @@
 PATH
   remote: ../../
   specs:
-    que-web (0.1.0)
+    que-web (0.2.0)
       que (~> 0.8)
       sinatra
 
