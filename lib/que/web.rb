@@ -2,7 +2,7 @@ require "sinatra"
 
 module Que
   class Web < Sinatra::Base
-    VERSION = "0.2.0"
+    VERSION = "0.2.1"
     PAGE_SIZE = 10
 
     use Rack::MethodOverride
