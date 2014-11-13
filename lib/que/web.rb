@@ -40,6 +40,16 @@ module Que
       erb :scheduled
     end
 
+    put "/jobs/:id" do |id|
+      job_id = id.to_i
+      if job_id > 0
+        p job_id
+        Que.execute SQL[:reschedule_job], [job_id, Time.now]
+      end
+
+      redirect request.referrer, 303
+    end
+
     delete "/jobs/:id" do |id|
       job_id = id.to_i
       if job_id > 0

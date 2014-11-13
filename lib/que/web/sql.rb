@@ -42,4 +42,9 @@ Que::Web::SQL = {
       FROM que_jobs
       WHERE job_id = $1::bigint
   }.freeze,
+  :reschedule_job => %{
+      UPDATE que_jobs
+      SET run_at = $2::timestamptz
+      WHERE job_id = $1::bigint
+  }.freeze,
 }.freeze
