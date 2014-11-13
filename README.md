@@ -1,4 +1,4 @@
-# que-web
+# que-web ![Travis](https://travis-ci.org/statianzo/que-web.svg)
 
 que-web is a web UI to the [Que](https://github.com/chanks/que) job queue.
 
