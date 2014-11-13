@@ -19,18 +19,18 @@
       <tbody>
         <% @list.page_jobs.each do |job| %>
           <tr>
-            <td><%= job.run_at.utc %></td>
+            <td><a href="<%= to "jobs/#{job.job_id}" %>"><%= job.run_at.utc %></a></td>
             <td><%= job.job_class %></td>
             <td><%= job.queue %></td>
             <td><pre><%= job.args.map(&:inspect).join(', ') %></pre></td>
             <td>
-              <form action="<%= to "/jobs/#{job.job_id}" %>" method="post">
+              <form action="<%= to "jobs/#{job.job_id}" %>" method="post">
                 <input type="hidden" name="_method" value="put" />
                 <button class="plain" title="Run Immediately"><i class="fa fa-play-circle"></i></button>
               </form>
             </td>
             <td>
-              <form action="<%= to "/jobs/#{job.job_id}" %>" method="post">
+              <form action="<%= to "jobs/#{job.job_id}" %>" method="post">
                 <input type="hidden" name="_method" value="delete" />
                 <button class="plain" title="Delete"><i class="fa fa-trash"></i></button>
               </form>

@@ -1,11 +1,10 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'que/web/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "que-web"
-  spec.version       = "0.1.0"
+  spec.version       = "0.2.0"
   spec.authors       = ["Jason Staten"]
   spec.email         = ["jstaten07@gmail.com"]
   spec.summary       = %q{A web interface for the que queue}

@@ -47,4 +47,10 @@ Que::Web::SQL = {
       SET run_at = $2::timestamptz
       WHERE job_id = $1::bigint
   }.freeze,
+  :fetch_job => %{
+      SELECT *
+      FROM que_jobs
+      WHERE job_id = $1::bigint
+      LIMIT 1
+  }.freeze,
 }.freeze

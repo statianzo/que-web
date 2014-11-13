@@ -2,6 +2,7 @@ require "sinatra"
 
 module Que
   class Web < Sinatra::Base
+    VERSION = "0.2.0"
     PAGE_SIZE = 10
 
     use Rack::MethodOverride
@@ -40,10 +41,24 @@ module Que
       erb :scheduled
     end
 
+    get "/jobs/:id" do |id|
+      job_id = id.to_i
+      jobs = []
+      if job_id > 0
+        jobs = Que.execute SQL[:fetch_job], [job_id]
+      end
+
+      if jobs.empty?
+        redirect to "", 303
+      else
+        @job = Viewmodels::Job.new(jobs.first)
+        erb :show
+      end
+    end
+
     put "/jobs/:id" do |id|
       job_id = id.to_i
       if job_id > 0
-        p job_id
         Que.execute SQL[:reschedule_job], [job_id, Time.now]
       end
 
