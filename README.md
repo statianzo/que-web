@@ -1,6 +1,8 @@
 # que-web
 
-que-web is a web UI to the [que](https://github.com/chanks/que) job queue.
+que-web is a web UI to the [Que](https://github.com/chanks/que) job queue.
+
+![Que Web](https://raw.githubusercontent.com/statianzo/que-web/master/doc/queweb.png)
 
 ## Installation
 
