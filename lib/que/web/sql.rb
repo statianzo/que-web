@@ -2,8 +2,8 @@ Que::Web::SQL = {
   :dashboard_stats => %{
       SELECT count(*)                    AS total,
              count(locks.job_id)         AS running,
-             sum((error_count > 0 AND locks.job_id IS NULL)::int) AS failing,
-             sum((error_count = 0 AND locks.job_id IS NULL)::int) AS scheduled
+             coalesce(sum((error_count > 0 AND locks.job_id IS NULL)::int), 0) AS failing,
+             coalesce(sum((error_count = 0 AND locks.job_id IS NULL)::int), 0) AS scheduled
       FROM que_jobs
       LEFT JOIN (
         SELECT (classid::bigint << 32) + objid::bigint AS job_id
