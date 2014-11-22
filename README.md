@@ -38,3 +38,9 @@ Or in Rails `config/routes.rb`
 require "que/web"
 mount Que::Web => "/que"
 ```
+
+If you want to use Docker, run:
+```
+docker run -e DATABASE_URL=postgres://username:password@hostname/db_name -p 3002:8080 joevandyk/que-web
+```
+Or use docker/Dockerfile to build your own container.
