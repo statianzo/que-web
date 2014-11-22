@@ -1,0 +1,25 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    pg (0.17.1)
+    que (0.8.2)
+    que-web (0.2.2)
+      que (~> 0.8)
+      sinatra
+    rack (1.5.2)
+    rack-protection (1.5.3)
+      rack
+    sequel (4.15.0)
+    sinatra (1.4.5)
+      rack (~> 1.4)
+      rack-protection (~> 1.4)
+      tilt (~> 1.3, >= 1.3.4)
+    tilt (1.4.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  pg
+  que-web
+  sequel
