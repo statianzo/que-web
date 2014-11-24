@@ -56,3 +56,7 @@ button.plain {
 .form-inline {
   display: inline-block;
 }
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}

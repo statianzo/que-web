@@ -22,7 +22,7 @@
             <td><a href="<%= to "jobs/#{job.job_id}" %>"><%= job.run_at.utc %></a></td>
             <td><%= job.job_class %></td>
             <td><%= job.queue %></td>
-            <td><pre><%= job.args.map(&:inspect).join(', ') %></pre></td>
+            <td><pre><%= format_args job %></pre></td>
             <td>
               <form action="<%= to "jobs/#{job.job_id}" %>" method="post">
                 <input type="hidden" name="_method" value="put" />

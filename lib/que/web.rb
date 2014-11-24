@@ -88,6 +88,24 @@ module Que
           "active"
         end
       end
+
+      def format_args(job)
+        truncate job.args.map(&:inspect).join(', ')
+      end
+
+      def format_error(job)
+        return unless job.last_error
+        line = job.last_error.lines.first
+        truncate line, 30
+      end
+
+      def truncate(str, len=200)
+        if str.length > len
+          str[0..len] + '...'
+        else
+          str
+        end
+      end
     end
   end
 end

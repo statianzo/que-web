@@ -13,6 +13,7 @@
           <th>Job</th>
           <th>Queue</th>
           <th>Args</th>
+          <th>Error</th>
           <th></th>
           <th></th>
         </tr>
@@ -24,7 +25,8 @@
             <td><%= job.error_count %></td>
             <td><%= job.job_class %></td>
             <td><%= job.queue %></td>
-            <td><pre><%= job.args.map(&:inspect).join(', ') %></pre></td>
+            <td><pre><%= format_args job %></pre></td>
+            <td><%= format_error job %></pre></td>
             <td>
               <form action="<%= to "jobs/#{job.job_id}" %>" method="post">
                 <input type="hidden" name="_method" value="put" />
