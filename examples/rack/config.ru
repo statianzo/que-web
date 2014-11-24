@@ -19,6 +19,13 @@ map '/fail' do
   }
 end
 
+map '/xss' do
+  run lambda { |env|
+    FailJob.enqueue '<script>alert("xss")</script>', {name: '<script>alert("xss")', age: 20, numbers: [10]*50}
+    [200, {}, ['Failing job queued']]
+  }
+end
+
 map '/delay' do
   run lambda { |env|
     SuccessJob.enqueue 'arg1', {name: 'delay', age: 30}, run_at: Time.now + 300
