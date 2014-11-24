@@ -10,5 +10,13 @@
   <%= erb :_navbar %>
   <%= yield %>
   <%= erb :_footer %>
+  <script src="<%= root_path %>js/jquery.min.js"></script>
+  <script src="<%= root_path %>js/jquery.timeago.min.js"></script>
+  <script>
+    (function($){
+      $.timeago.settings.allowFuture = true;
+      $(".timeago").timeago();
+    }(jQuery));
+  </script>
 </body>
 </html>

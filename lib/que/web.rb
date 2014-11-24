@@ -1,5 +1,4 @@
 require "sinatra"
-
 module Que
   class Web < Sinatra::Base
     PAGE_SIZE = 10
@@ -97,6 +96,10 @@ module Que
         return unless job.last_error
         line = job.last_error.lines.first
         truncate line, 30
+      end
+
+      def relative_time(time)
+        %{<time class="timeago" datetime="#{time.utc.iso8601}">#{time.utc}</time>}
       end
 
       def truncate(str, len=200)
