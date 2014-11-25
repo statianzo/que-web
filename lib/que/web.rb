@@ -85,7 +85,7 @@ module Que
       Pager.new(page, PAGE_SIZE, record_count)
     end
 
-    after { session['flash'] = {} if @sweep_flash }
+    after { session[FLASH_KEY] = {} if @sweep_flash }
 
     helpers do
       def root_path

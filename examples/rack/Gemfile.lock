@@ -1,7 +1,7 @@
 PATH
   remote: ../../
   specs:
-    que-web (0.2.2)
+    que-web (0.3.0)
       erubis
       que (~> 0.8)
       sinatra

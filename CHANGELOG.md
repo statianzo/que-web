@@ -1,3 +1,7 @@
+### 0.3.1 - 2014-11-24
+#### Fixed:
+- Flash messages were not getting swept
+
 ### 0.3.0 - 2014-11-24
 #### Added:
 - Dockerfile #1
