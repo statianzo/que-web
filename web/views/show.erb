@@ -21,7 +21,7 @@
         </tr>
         <tr>
           <th>Run At</th>
-          <td><%= @job.run_at.utc %></td>
+          <td><%== relative_time @job.run_at %></td>
         </tr>
         <tr>
           <th>Failures</th>
