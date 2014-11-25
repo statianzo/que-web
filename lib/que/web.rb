@@ -60,8 +60,11 @@ module Que
     put "/jobs/:id" do |id|
       job_id = id.to_i
       if job_id > 0
-        Que.execute SQL[:reschedule_job], [job_id, Time.now]
+        run_at = Time.now
+        Que.execute SQL[:reschedule_job], [job_id, run_at]
+        set_flash "info", "Job #{job_id} rescheduled for #{run_at}"
       end
+
 
       redirect request.referrer, 303
     end
@@ -70,6 +73,7 @@ module Que
       job_id = id.to_i
       if job_id > 0
         Que.execute SQL[:delete_job], [job_id]
+        set_flash "warning", "Job #{job_id} deleted"
       end
 
       redirect request.referrer, 303
@@ -79,6 +83,8 @@ module Que
       page = (params[:page] || 1).to_i
       Pager.new(page, PAGE_SIZE, record_count)
     end
+
+    after { session['flash'] = {} if @sweep_flash }
 
     helpers do
       def root_path
@@ -111,6 +117,16 @@ module Que
         else
           str
         end
+      end
+
+      def flash
+        @sweep_flash = true
+        session['flash'] ||= {}
+      end
+
+      def set_flash(level, val)
+        hash = session['flash'] ||= {}
+        hash[level] = val
       end
     end
   end

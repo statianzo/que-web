@@ -2,6 +2,7 @@ require File.expand_path('../boot', __FILE__)
 require 'que/web'
 
 map '/que' do
+  use Rack::Session::Cookie, :secret => 'insecure', :key => 'que.examples.rack'
   run Que::Web
 end
 
