@@ -4,6 +4,7 @@ require "erubis"
 module Que
   class Web < Sinatra::Base
     PAGE_SIZE = 10
+    FLASH_KEY = 'que.web.flash'.freeze
 
     use Rack::MethodOverride
 
@@ -121,11 +122,11 @@ module Que
 
       def flash
         @sweep_flash = true
-        session['flash'] ||= {}
+        session[FLASH_KEY] ||= {}
       end
 
       def set_flash(level, val)
-        hash = session['flash'] ||= {}
+        hash = session[FLASH_KEY] ||= {}
         hash[level] = val
       end
     end
