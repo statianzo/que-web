@@ -1,3 +1,7 @@
+### 0.3.2 - 2014-12-05
+#### Fixed:
+- Fix escaping on pagination controls #10
+
 ### 0.3.1 - 2014-11-24
 #### Fixed:
 - Flash messages were not getting swept
