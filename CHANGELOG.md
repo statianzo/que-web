@@ -1,3 +1,8 @@
+### Unreleased
+#### Fixed:
+- Fix clipping of pagination buttons #11
+
+
 ### 0.3.2 - 2014-12-05
 #### Fixed:
 - Fix escaping on pagination controls #10

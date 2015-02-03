@@ -10,5 +10,9 @@
     <li class="<%= active_class('scheduled') %>"><a href="<%= to 'scheduled' %>"><span>Scheduled</span></a></li>
     <li class="<%= active_class('failing') %>"><a href="<%= to 'failing' %>"><span>Failing</span></a></li>
   </ul>
+  <ul class="right version">
+    <li>Que <%= Que::Version %></li>
+    <li><%= Time.now.utc.strftime("%D %H:%M:%S %Z") %></li>
+  </ul>
 </section>
 </nav>

@@ -60,3 +60,10 @@ pre {
   white-space: pre-wrap;
   word-wrap: break-word;
 }
+
+.version li {
+  padding: 0 15px;
+  line-height: 45px;
+  color: #999999;
+  font-size: 0.8125rem;
+}
