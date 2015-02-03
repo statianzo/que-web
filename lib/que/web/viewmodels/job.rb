@@ -10,5 +10,9 @@ module Que::Web::Viewmodels
         self[m] = job[m.to_s]
       end
     end
+
+    def past_due?(relative_to = Time.now)
+      run_at < relative_to
+    end
   end
 end

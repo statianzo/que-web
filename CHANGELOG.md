@@ -1,4 +1,7 @@
 ### Unreleased
+#### Added:
+- Indicate when a job is past due #2
+
 #### Fixed:
 - Fix clipping of pagination buttons #11
 

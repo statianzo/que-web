@@ -67,3 +67,7 @@ pre {
   color: #999999;
   font-size: 0.8125rem;
 }
+
+i.subtle {
+  color: #999999;
+}

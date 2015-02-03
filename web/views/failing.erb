@@ -21,7 +21,10 @@
       <tbody>
         <% @list.page_jobs.each do |job| %>
           <tr>
-            <td><a href="<%= to "jobs/#{job.job_id}" %>"><%== relative_time job.run_at %></a></td>
+            <td><a href="<%= to "jobs/#{job.job_id}" %>">
+              <%== relative_time job.run_at %></a>
+              <%== erb :_past_due, locals: {job: job} %>
+            </td>
             <td><%= job.error_count %></td>
             <td><%= job.job_class %></td>
             <td><%= job.queue %></td>
