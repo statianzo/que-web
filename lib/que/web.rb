@@ -109,6 +109,9 @@ module Que
       end
 
       def relative_time(time)
+        if time.is_a?(String)
+          time = Time.parse(time)
+        end
         %{<time class="timeago" datetime="#{time.utc.iso8601}">#{time.utc}</time>}
       end
 
