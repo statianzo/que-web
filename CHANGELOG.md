@@ -1,9 +1,6 @@
-### Unreleased
+### 0.4.0 - 2015-04-09
 #### Added:
 - Indicate when a job is past due #2
-
-#### Changed:
-- Updated example Gemfile.lock to Que 0.9.1
 
 #### Fixed:
 - Fix clipping of pagination buttons #11
