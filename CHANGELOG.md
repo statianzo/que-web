@@ -7,6 +7,7 @@
 
 #### Fixed:
 - Fix clipping of pagination buttons #11
+- Turn time string into time object #13
 
 
 ### 0.3.2 - 2014-12-05
