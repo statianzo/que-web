@@ -39,6 +39,14 @@ require "que/web"
 mount Que::Web => "/que"
 ```
 
+If you want to require authentication (Devise):
+
+```ruby
+authenticate :user do
+  mount Que::Web, at: 'que'
+end
+```
+
 If you want to use Docker, run:
 ```
 docker run -e DATABASE_URL=postgres://username:password@hostname/db_name -p 3002:8080 joevandyk/que-web
