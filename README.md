@@ -22,7 +22,9 @@ Or install it yourself as:
 
 ## Usage
 
-In your `config.ru` add
+#### With `config.ru`
+
+Add in `config.ru`:
 
 ```ruby
 require "que/web"
@@ -32,22 +34,49 @@ map "/que" do
 end
 ```
 
-Or in Rails `config/routes.rb`
+### Rails
+
+In `config/routes.rb`:
 
 ```ruby
 require "que/web"
 mount Que::Web => "/que"
 ```
 
-If you want to require authentication (Devise):
+#### Rails 5.0
 
+You must use the master branch of Sinatra for `que-web`.
+In your gemfile:
+
+```
+gem 'que-web'
+gem 'sinatra', git: 'https://github.com/sinatra/sinatra'
+```
+
+See https://github.com/sinatra/sinatra/issues/1071
+
+### Authentication
+
+#### Devise
 ```ruby
 authenticate :user do
   mount Que::Web, at: 'que'
 end
 ```
 
-If you want to use Docker, run:
+#### Basic HTTP auth
+
+In `config/initializers/queweb.rb`:
+```ruby
+Que::Web.use(Rack::Auth::Basic) do |user, password|
+  [user, password] == [ENV["QUEWEB_USERNAME"], ENV["QUEWEB_PASSWORD"]]
+end
+```
+Then add the two environment variables to your production environment.
+
+### Docker
+
+Run:
 ```
 docker run -e DATABASE_URL=postgres://username:password@hostname/db_name -p 3002:8080 joevandyk/que-web
 ```
