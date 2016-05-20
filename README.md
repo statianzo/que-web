@@ -59,6 +59,7 @@ See https://github.com/sinatra/sinatra/issues/1071
 
 #### Devise
 ```ruby
+# config/routes.rb
 authenticate :user do
   mount Que::Web, at: 'que'
 end
