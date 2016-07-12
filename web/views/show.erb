@@ -44,11 +44,11 @@
 </div>
 <div class="row">
   <div class="small-12 columns">
-    <form class="form-inline" action="<%= to "/jobs/#{@job.job_id}" %>" method="post">
+    <form class="form-inline" action="<%= link_to "/jobs/#{@job.job_id}" %>" method="post">
       <input type="hidden" name="_method" value="put" />
       <button><i class="fa fa-play-circle"></i> Run Immediately</button>
     </form>
-    <form class="form-inline" maction="<%= to "/jobs/#{@job.job_id}" %>" method="post">
+    <form class="form-inline" maction="<%= link_to "/jobs/#{@job.job_id}" %>" method="post">
       <input type="hidden" name="_method" value="Delete" />
       <button class="button alert"><i class="fa fa-trash"></i> Delete</button>
     </form>

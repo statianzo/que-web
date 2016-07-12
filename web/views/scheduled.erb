@@ -1,6 +1,9 @@
 <div class="row">
-  <div class="small-12 columns">
+  <div class="small-12 medium-8 columns">
     <h1><%= @list.total %> Scheduled Job<%= @list.total == 1 ? "" : "s" %></h1>
+  </div>
+  <div class="small-12 medium-4 columns">
+    <%== erb :_search %>
   </div>
 </div>
 <div class="row">
@@ -20,20 +23,20 @@
         <% @list.page_jobs.each do |job| %>
           <tr>
             <td>
-              <a href="<%= to "jobs/#{job.job_id}" %>"><%== relative_time job.run_at %></a>
+              <a href="<%= link_to "jobs/#{job.job_id}" %>"><%== relative_time job.run_at %></a>
               <%== erb :_past_due, locals: {job: job}%>
             </td>
             <td><%= job.job_class %></td>
             <td><%= job.queue %></td>
             <td><pre><%= format_args job %></pre></td>
             <td>
-              <form action="<%= to "jobs/#{job.job_id}" %>" method="post">
+              <form action="<%= link_to "jobs/#{job.job_id}" %>" method="post">
                 <input type="hidden" name="_method" value="put" />
                 <button class="plain" title="Run Immediately"><i class="fa fa-play-circle"></i></button>
               </form>
             </td>
             <td>
-              <form action="<%= to "jobs/#{job.job_id}" %>" method="post">
+              <form action="<%= link_to "jobs/#{job.job_id}" %>" method="post">
                 <input type="hidden" name="_method" value="delete" />
                 <button class="plain" title="Delete"><i class="fa fa-trash"></i></button>
               </form>

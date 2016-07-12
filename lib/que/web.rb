@@ -14,30 +14,30 @@ module Que
     set :erb, :escape_html => true
 
     get "/" do
-      stats = Que.execute SQL[:dashboard_stats]
+      stats = Que.execute SQL[:dashboard_stats], [search]
       @dashboard = Viewmodels::Dashboard.new(stats[0])
       erb :index
     end
 
     get "/running" do
-      worker_states = Que.worker_states
+      worker_states = search_running Que.worker_states
       pager = get_pager worker_states.count
       @list = Viewmodels::JobList.new(worker_states, pager)
       erb :running
     end
 
     get "/failing" do
-      stats = Que.execute SQL[:dashboard_stats]
+      stats = Que.execute SQL[:dashboard_stats], [search]
       pager = get_pager stats[0]["failing"]
-      failing_jobs = Que.execute SQL[:failing_jobs], [pager.page_size, pager.offset]
+      failing_jobs = Que.execute SQL[:failing_jobs], [pager.page_size, pager.offset, search]
       @list = Viewmodels::JobList.new(failing_jobs, pager)
       erb :failing
     end
 
     get "/scheduled" do
-      stats = Que.execute SQL[:dashboard_stats]
+      stats = Que.execute SQL[:dashboard_stats], [search]
       pager = get_pager stats[0]["scheduled"]
-      scheduled_jobs = Que.execute SQL[:scheduled_jobs], [pager.page_size, pager.offset]
+      scheduled_jobs = Que.execute SQL[:scheduled_jobs], [pager.page_size, pager.offset, search]
 
       @list = Viewmodels::JobList.new(scheduled_jobs, pager)
       erb :scheduled
@@ -85,11 +85,35 @@ module Que
       Pager.new(page, PAGE_SIZE, record_count)
     end
 
+    def search
+      return '%' unless search_param.present?
+      "%#{search_param}%"
+    end
+
+    def search_running(jobs)
+      return jobs unless search_param.present?
+      jobs.select { |job| job.job_class.include? search_param }
+    end
+
+    def search_param
+      return unless params['search'].present?
+      params['search'].gsub(/[^0-9A-Za-z:]/, '')
+    end
+
     after { session[FLASH_KEY] = {} if @sweep_flash }
 
     helpers do
       def root_path
         "#{env['SCRIPT_NAME']}/"
+      end
+
+      def link_to(path)
+        to path_with_search(path)
+      end
+
+      def path_with_search(path)
+        path += "?search=#{search_param}" if search_param.present?
+        path
       end
 
       def active_class(pattern)
