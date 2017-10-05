@@ -62,10 +62,16 @@ module Que
       job_id = id.to_i
       if job_id > 0
         run_at = Time.now
-        Que.execute SQL[:reschedule_job], [job_id, run_at]
-        set_flash "info", "Job #{job_id} rescheduled for #{run_at}"
-      end
 
+        updated_rows = Que.execute SQL[:reschedule_job], [job_id, run_at]
+
+        if updated_rows.empty?
+          # Didn't get the advisory lock
+          set_flash "warning", "Job #{job_id} not rescheduled as it was already runnning"
+        else
+          set_flash "info", "Job #{job_id} rescheduled for #{run_at}"
+        end
+      end
 
       redirect request.referrer, 303
     end
@@ -73,8 +79,14 @@ module Que
     delete "/jobs/:id" do |id|
       job_id = id.to_i
       if job_id > 0
-        Que.execute SQL[:delete_job], [job_id]
-        set_flash "warning", "Job #{job_id} deleted"
+        updated_rows = Que.execute SQL[:delete_job], [job_id]
+
+        if updated_rows.empty?
+          # Didn't get the advisory lock
+          set_flash "warning", "Job #{job_id} not deleted as it was already runnning"
+        else
+          set_flash "info", "Job #{job_id} deleted"
+        end
       end
 
       redirect request.referrer, 303
