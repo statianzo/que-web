@@ -43,14 +43,14 @@ Que::Web::SQL = {
     DELETE
     FROM que_jobs
     WHERE job_id = $1::bigint
-    AND pg_try_advisory_lock(job_id)
+    AND pg_try_advisory_lock($1::bigint)
     RETURNING pg_advisory_unlock(job_id)
   SQL
   reschedule_job: <<-SQL.freeze,
     UPDATE que_jobs
     SET run_at = $2::timestamptz
     WHERE job_id = $1::bigint
-    AND pg_try_advisory_lock(job_id)
+    AND pg_try_advisory_lock($1::bigint)
     RETURNING pg_advisory_unlock(job_id)
   SQL
   fetch_job: <<-SQL.freeze,
