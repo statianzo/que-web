@@ -63,13 +63,14 @@ module Que
       if job_id > 0
         run_at = Time.now
 
-        updated_rows = Que.execute SQL[:reschedule_job], [job_id, run_at]
+        obtained_lock = with_locked_job(job_id) do
+          Que.execute SQL[:reschedule_job], [job_id, run_at]
 
-        if updated_rows.empty?
-          # Didn't get the advisory lock
-          set_flash "warning", "Job #{job_id} not rescheduled as it was already runnning"
-        else
           set_flash "info", "Job #{job_id} rescheduled for #{run_at}"
+        end
+
+        unless obtained_lock
+          set_flash "warning", "Job #{job_id} not rescheduled as it was already runnning"
         end
       end
 
@@ -79,17 +80,29 @@ module Que
     delete "/jobs/:id" do |id|
       job_id = id.to_i
       if job_id > 0
-        updated_rows = Que.execute SQL[:delete_job], [job_id]
-
-        if updated_rows.empty?
-          # Didn't get the advisory lock
-          set_flash "warning", "Job #{job_id} not deleted as it was already runnning"
-        else
+        obtained_lock = with_locked_job(job_id) do
+          Que.execute SQL[:delete_job], [job_id]
           set_flash "info", "Job #{job_id} deleted"
+        end
+
+        unless obtained_lock
+          set_flash "warning", "Job #{job_id} not deleted as it was already runnning"
         end
       end
 
       redirect request.referrer, 303
+    end
+
+    def with_locked_job(job_id)
+      result = Que.execute SQL[:lock_job], [job_id]
+
+      obtained_lock = !result.empty? && result.first[:obtained_lock]
+
+      yield if obtained_lock
+
+      obtained_lock
+    ensure
+      Que.execute SQL[:unlock_job], [job_id] if obtained_lock
     end
 
     def get_pager(record_count)
