@@ -40,18 +40,21 @@ Que::Web::SQL = {
     OFFSET $2::int
   SQL
   delete_job: <<-SQL.freeze,
-    DELETE
-    FROM que_jobs
+    DELETE FROM que_jobs
     WHERE job_id = $1::bigint
-    AND pg_try_advisory_lock($1::bigint)
-    RETURNING pg_advisory_unlock(job_id)
   SQL
   reschedule_job: <<-SQL.freeze,
     UPDATE que_jobs
     SET run_at = $2::timestamptz
     WHERE job_id = $1::bigint
-    AND pg_try_advisory_lock($1::bigint)
-    RETURNING pg_advisory_unlock(job_id)
+  SQL
+  lock_job: <<-SQL.freeze,
+    SELECT pg_try_advisory_lock(job_id) AS obtained_lock
+    FROM que_jobs
+    WHERE job_id = $1::bigint
+  SQL
+  unlock_job: <<-SQL.freeze,
+    SELECT pg_advisory_unlock($1::bigint)
   SQL
   fetch_job: <<-SQL.freeze,
     SELECT *
