@@ -4,11 +4,6 @@ que-web is a web UI to the [Que](https://github.com/chanks/que) job queue.
 
 ![Que Web](https://raw.githubusercontent.com/statianzo/que-web/master/doc/queweb.png)
 
-
-<a target='_blank' rel='nofollow' href='https://app.codesponsor.io/link/AitzkUqcdsSnujfFtmVhTLXR/statianzo/que-web'>
-  <img alt='Sponsor' width='888' height='68' src='https://app.codesponsor.io/embed/AitzkUqcdsSnujfFtmVhTLXR/statianzo/que-web.svg' />
-</a>
-
 ## Installation
 
 Add this line to your application's Gemfile:
