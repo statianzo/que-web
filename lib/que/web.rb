@@ -76,6 +76,28 @@ module Que
       redirect request.referrer, 303
     end
 
+    put "/jobs" do
+      query = case params[:scope]
+      when 'scheduled'
+        SQL[:reschedule_all_scheduled_jobs]
+      when 'failing'
+        SQL[:reschedule_all_failing_jobs]
+      else
+        return
+      end
+
+      run_at = Time.now
+      updated_rows = Que.execute query, [run_at]
+
+      if updated_rows.empty?
+        set_flash "warning", "No jobs rescheduled"
+      else
+        set_flash "info", "#{updated_rows.count} jobs rescheduled for #{run_at}"
+      end
+
+      redirect request.referrer, 303
+    end
+
     delete "/jobs/:id" do |id|
       job_id = id.to_i
       if job_id > 0
@@ -87,6 +109,27 @@ module Que
         else
           set_flash "info", "Job #{job_id} deleted"
         end
+      end
+
+      redirect request.referrer, 303
+    end
+
+    delete "/jobs" do
+      query = case params[:scope]
+      when 'scheduled'
+          SQL[:delete_all_scheduled_jobs]
+      when 'failing'
+        SQL[:delete_all_failing_jobs]
+      else
+        return
+      end
+
+      updated_rows = Que.execute query
+
+      if updated_rows.empty?
+        set_flash "warning", "No jobs deleted"
+      else
+        set_flash "info", "#{updated_rows.count} jobs deleted"
       end
 
       redirect request.referrer, 303

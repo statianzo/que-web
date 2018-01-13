@@ -4,6 +4,41 @@ lock_job_sql = <<-SQL.freeze
     WHERE job_id = $1::bigint
 SQL
 
+lock_all_failing_jobs_sql = <<-SQL.freeze
+    SELECT job_id, pg_try_advisory_lock(job_id) AS locked
+    FROM que_jobs
+    WHERE error_count > 0
+SQL
+
+lock_all_scheduled_jobs_sql = <<-SQL.freeze
+    SELECT job_id, pg_try_advisory_lock(job_id) AS locked
+    FROM que_jobs
+    WHERE error_count = 0
+SQL
+
+def reschedule_all_jobs_query(scope)
+  <<-SQL.freeze
+    WITH target AS (#{scope})
+    UPDATE que_jobs
+    SET run_at = $1::timestamptz
+    FROM target
+    WHERE target.locked
+    AND target.job_id = que_jobs.job_id
+    RETURNING pg_advisory_unlock(target.job_id)
+  SQL
+end
+
+def delete_jobs_query(scope)
+  <<-SQL.freeze
+    WITH target AS (#{scope})
+    DELETE FROM que_jobs
+    USING target
+    WHERE target.locked
+    AND target.job_id = que_jobs.job_id
+    RETURNING pg_advisory_unlock(target.job_id)
+  SQL
+end
+
 Que::Web::SQL = {
   dashboard_stats: <<-SQL.freeze,
     SELECT count(*)                    AS total,
@@ -45,14 +80,9 @@ Que::Web::SQL = {
     LIMIT $1::int
     OFFSET $2::int
   SQL
-  delete_job: <<-SQL.freeze,
-    WITH target AS (#{lock_job_sql})
-    DELETE FROM que_jobs
-    USING target
-    WHERE target.locked
-    AND target.job_id = que_jobs.job_id
-    RETURNING pg_advisory_unlock(target.job_id)
-  SQL
+  delete_job: delete_jobs_query(lock_job_sql),
+  delete_all_scheduled_jobs: delete_jobs_query(lock_all_scheduled_jobs_sql),
+  delete_all_failing_jobs: delete_jobs_query(lock_all_failing_jobs_sql),
   reschedule_job: <<-SQL.freeze,
     WITH target AS (#{lock_job_sql})
     UPDATE que_jobs
@@ -62,6 +92,8 @@ Que::Web::SQL = {
     AND target.job_id = que_jobs.job_id
     RETURNING pg_advisory_unlock(target.job_id)
   SQL
+  reschedule_all_scheduled_jobs: reschedule_all_jobs_query(lock_all_scheduled_jobs_sql),
+  reschedule_all_failing_jobs: reschedule_all_jobs_query(lock_all_failing_jobs_sql),
   fetch_job: <<-SQL.freeze,
     SELECT *
     FROM que_jobs

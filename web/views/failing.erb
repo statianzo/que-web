@@ -60,11 +60,13 @@
     <div class="small-4 columns text-right">
       <form action="<%= link_to "jobs" %>" method="post" class="form-inline">
         <input type="hidden" name="_method" value="put" />
+        <input type="hidden" name="scope" value="failing" />
         <button class="button small" title="Retry All Immediately"><i class="fa fa-refresh"></i> Retry All</button>
       </form>
       &nbsp;
       <form action="<%= link_to "jobs" %>" method="post" class="form-inline">
         <input type="hidden" name="_method" value="delete" />
+        <input type="hidden" name="scope" value="failing" />
         <button class="button small alert" title="Delete All"><i class="fa fa-trash"></i> Delete All</button>
       </form>
     </div>
