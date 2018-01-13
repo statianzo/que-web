@@ -53,7 +53,20 @@
   </div>
 </div>
 <div class="row">
-  <div class="small-12 columns">
+  <div class="small-8 columns">
     <%== erb :_pager %>
   </div>
+  <% if @list.total > 0 %>
+    <div class="small-4 columns text-right">
+      <form action="<%= link_to "jobs" %>" method="post" class="form-inline">
+        <input type="hidden" name="_method" value="put" />
+        <button class="button small" title="Retry All Immediately"><i class="fa fa-refresh"></i> Retry All</button>
+      </form>
+      &nbsp;
+      <form action="<%= link_to "jobs" %>" method="post" class="form-inline">
+        <input type="hidden" name="_method" value="delete" />
+        <button class="button small alert" title="Delete All"><i class="fa fa-trash"></i> Delete All</button>
+      </form>
+    </div>
+  <% end %>
 </div>
