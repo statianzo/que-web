@@ -83,7 +83,7 @@ module Que
       when 'failing'
         SQL[:reschedule_all_failing_jobs]
       else
-        return
+        halt 400, "Unrecognized scope '#{params[:scope]}'. Valid scopes are: scheduled, failing"
       end
 
       run_at = Time.now
@@ -121,7 +121,7 @@ module Que
       when 'failing'
         SQL[:delete_all_failing_jobs]
       else
-        return
+        halt 400, "Unrecognized scope '#{params[:scope]}'. Valid scopes are: scheduled, failing"
       end
 
       updated_rows = Que.execute query
