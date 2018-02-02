@@ -48,7 +48,24 @@
   </div>
 </div>
 <div class="row">
-  <div class="small-12 columns">
+  <div class="small-8 columns">
     <%== erb :_pager %>
   </div>
+  <% if @list.total > 0 %>
+    <div class="small-4 columns text-right">
+      <form action="<%= link_to "jobs" %>" method="post" class="form-inline"
+            onsubmit="return confirm('Run all <%= @list.total %> jobs now?');">
+        <input type="hidden" name="_method" value="put" />
+        <input type="hidden" name="scope" value="scheduled" />
+        <button class="button small" title="Run All Immediately"><i class="fa fa-play-circle"></i> Run All</button>
+      </form>
+      &nbsp;
+      <form action="<%= link_to "jobs" %>" method="post" class="form-inline"
+            onsubmit="return confirm('Delete all <%= @list.total %> jobs?');">
+        <input type="hidden" name="_method" value="delete" />
+        <input type="hidden" name="scope" value="scheduled" />
+        <button class="button small alert" title="Delete All"><i class="fa fa-trash"></i> Delete All</button>
+      </form>
+    </div>
+  <% end %>
 </div>
