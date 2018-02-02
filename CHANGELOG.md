@@ -1,3 +1,10 @@
+### 0.7.0 - 2018-02-02
+#### Added:
+- Delete All and Reschedule All ([#39](https://github.com/statianzo/que-web/pull/39))
+
+#### Docs:
+- Upgrade vulnerable rack version in example
+
 ### 0.4.0 - 2015-04-09
 #### Added:
 - Indicate when a job is past due #2
