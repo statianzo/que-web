@@ -157,7 +157,7 @@ module Que
 
     after { session[FLASH_KEY] = {} if @sweep_flash }
 
-    helpers do
+    module Helpers
       def root_path
         "#{env['SCRIPT_NAME']}/"
       end
@@ -183,7 +183,7 @@ module Que
 
       def format_error(job)
         return unless job.last_error
-        line = job.last_error.lines.first
+        line = job.last_error.lines.first || ''
         truncate line, 30
       end
 
@@ -209,6 +209,7 @@ module Que
         hash[level] = val
       end
     end
+    helpers Helpers
   end
 end
 
