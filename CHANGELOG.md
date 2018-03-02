@@ -1,5 +1,9 @@
 ### Unreleased
-- Fix to handle empty last_error strings
+
+### 0.7.1 - 2018-03-02
+
+#### Fixed:
+- Fix to handle empty last_error strings [#40](https://github.com/statianzo/que-web/pull/40)
 
 ### 0.7.0 - 2018-02-02
 #### Added:
