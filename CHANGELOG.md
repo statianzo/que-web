@@ -1,3 +1,6 @@
+### Unreleased
+- Fix to handle empty last_error strings
+
 ### 0.7.0 - 2018-02-02
 #### Added:
 - Delete All and Reschedule All ([#39](https://github.com/statianzo/que-web/pull/39))
