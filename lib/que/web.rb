@@ -140,21 +140,6 @@ module Que
       Pager.new(page, PAGE_SIZE, record_count)
     end
 
-    def search
-      return '%' unless search_param.present?
-      "%#{search_param}%"
-    end
-
-    def search_running(jobs)
-      return jobs unless search_param.present?
-      jobs.select { |job| job.job_class.include? search_param }
-    end
-
-    def search_param
-      return unless params['search'].present?
-      params['search'].gsub(/[^0-9A-Za-z:]/, '')
-    end
-
     after { session[FLASH_KEY] = {} if @sweep_flash }
 
     module Helpers
@@ -167,8 +152,24 @@ module Que
       end
 
       def path_with_search(path)
-        path += "?search=#{search_param}" if search_param.present?
+        path += "?search=#{search_param}" if search_param
         path
+      end
+
+      def search
+        return '%' unless search_param
+        "%#{search_param}%"
+      end
+
+      def search_running(jobs)
+        return jobs unless search_param
+        jobs.select { |job| job.fetch('job_class').include? search_param }
+      end
+
+      def search_param
+        sanitised = (params['search'] || '').gsub(/[^0-9a-z:]i/, '')
+        return if sanitised.empty?
+        sanitised
       end
 
       def active_class(pattern)
