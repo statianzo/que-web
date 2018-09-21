@@ -20,7 +20,7 @@ module Que
     end
 
     get "/running" do
-      worker_states = search_running Que.worker_states
+      worker_states = search_running Que.job_states
       pager = get_pager worker_states.count
       @list = Viewmodels::JobList.new(worker_states, pager)
       erb :running
@@ -28,7 +28,7 @@ module Que
 
     get "/failing" do
       stats = Que.execute SQL[:dashboard_stats], [search]
-      pager = get_pager stats[0]["failing"]
+      pager = get_pager stats[0][:failing]
       failing_jobs = Que.execute SQL[:failing_jobs], [pager.page_size, pager.offset, search]
       @list = Viewmodels::JobList.new(failing_jobs, pager)
       erb :failing
@@ -36,9 +36,8 @@ module Que
 
     get "/scheduled" do
       stats = Que.execute SQL[:dashboard_stats], [search]
-      pager = get_pager stats[0]["scheduled"]
+      pager = get_pager stats[0][:scheduled]
       scheduled_jobs = Que.execute SQL[:scheduled_jobs], [pager.page_size, pager.offset, search]
-
       @list = Viewmodels::JobList.new(scheduled_jobs, pager)
       erb :scheduled
     end
@@ -62,9 +61,7 @@ module Que
       job_id = id.to_i
       if job_id > 0
         run_at = Time.now
-
         updated_rows = Que.execute SQL[:reschedule_job], [job_id, run_at]
-
         if updated_rows.empty?
           # Didn't get the advisory lock
           set_flash "warning", "Job #{job_id} not rescheduled as it was already runnning"
@@ -163,7 +160,7 @@ module Que
 
       def search_running(jobs)
         return jobs unless search_param
-        jobs.select { |job| job.fetch('job_class').include? search_param }
+        jobs.select { |job| job.fetch(:job_class).include? search_param }
       end
 
       def search_param
@@ -183,8 +180,8 @@ module Que
       end
 
       def format_error(job)
-        return unless job.last_error
-        line = job.last_error.lines.first || ''
+        return unless job.last_error_message
+        line = job.last_error_message.lines.first || ''
         truncate line, 30
       end
 

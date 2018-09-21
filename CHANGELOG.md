@@ -1,5 +1,11 @@
 ### Unreleased
 
+### 0.8 - 2018-09-21
+
+#### Compatibility with 1.0.0.beta3 Que:
+- Changed job_id to id
+- Removed pg_* attributes
+
 ### 0.7.1 - 2018-03-02
 
 #### Fixed:
