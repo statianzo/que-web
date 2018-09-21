@@ -4,9 +4,9 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = "que-web"
-  spec.version       = "0.7.2"
-  spec.authors       = ["Jason Staten"]
-  spec.email         = ["jstaten07@gmail.com"]
+  spec.version       = "0.8.0"
+  spec.authors       = ["Jason Staten", "Bruno Porto"]
+  spec.email         = ["jstaten07@gmail.com", "brunotporto@gmail.com"]
   spec.summary       = %q{A web interface for the que queue}
   spec.description   = %q{A web interface for the que queue}
   spec.homepage      = "https://github.com/statianzo/que-web"
