@@ -16,7 +16,7 @@ describe Que::Web::Helpers do
   end
 
   def error_job(last_error)
-    Que::Web::Viewmodels::Job.new('last_error' => last_error)
+    Que::Web::Viewmodels::Job.new(last_error_message: last_error)
   end
 
   describe '#format_error' do
@@ -36,10 +36,10 @@ describe Que::Web::Helpers do
   describe '#search_running' do
     let(:jobs) do
       [
-        { 'job_class' => 'JobClassA' },
-        { 'job_class' => 'JobClassB' },
-        { 'job_class' => 'JobClassA2' },
-        { 'job_class' => 'JobClassC' }
+        { job_class: 'JobClassA' },
+        { job_class: 'JobClassB' },
+        { job_class: 'JobClassA2' },
+        { job_class: 'JobClassC' }
       ]
     end
 
@@ -65,8 +65,8 @@ describe Que::Web::Helpers do
       it 'returns only the jobs whose class matches the search' do
         subject.search_running(jobs).must_equal(
           [
-            { 'job_class' => 'JobClassA' },
-            { 'job_class' => 'JobClassA2' }
+            { job_class: 'JobClassA' },
+            { job_class: 'JobClassA2' }
           ]
         )
       end

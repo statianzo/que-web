@@ -1,13 +1,12 @@
 module Que::Web::Viewmodels
   class Job < Struct.new(
-    :args, :error_count, :job_class, :job_id, :last_error,
-    :pg_backend_pid, :pg_last_query, :pg_last_query_started_at, :pg_state,
-    :pg_state_changed_at, :pg_transaction_started_at, :pg_waiting_on_lock,
-    :priority, :queue, :run_at)
+      :priority, :run_at, :id, :job_class, :error_count, :last_error_message,
+      :queue, :last_error_backtrace, :finished_at, :expired_at, :args, :data,
+      :backend_pid)
 
     def initialize(job)
       members.each do |m|
-        self[m] = job[m.to_s]
+        self[m] = job[m]
       end
     end
 

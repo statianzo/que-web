@@ -20,7 +20,7 @@
       <tbody>
         <% @list.page_jobs.each do |job| %>
           <tr>
-            <td><%== relative_time job.pg_state_changed_at %></td>
+            <td><%== relative_time job.run_at %></td>
             <td><%= job.job_class %></td>
             <td><%= job.queue %></td>
             <td><pre><%= job.args.map(&:inspect).join(', ') %></pre></td>
