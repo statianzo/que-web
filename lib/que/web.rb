@@ -164,7 +164,7 @@ module Que
       end
 
       def search_param
-        sanitised = (params['search'] || '').gsub(/[^0-9a-z:]i/, '')
+        sanitised = (params['search'] || '').gsub(/[^0-9a-z:]/i, '')
         return if sanitised.empty?
         sanitised
       end
