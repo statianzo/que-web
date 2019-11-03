@@ -1,28 +1,28 @@
 PATH
   remote: ../..
   specs:
-    que-web (0.7.0)
+    que-web (0.8.0)
       erubis
-      que (~> 0.8)
+      que (~> 1.0.0.beta3)
       sinatra
 
 GEM
   remote: https://rubygems.org/
   specs:
     erubis (2.7.0)
-    mustermann (1.0.1)
+    mustermann (1.0.3)
     pg (1.0.0)
-    que (0.14.2)
-    rack (2.0.4)
-    rack-protection (2.0.0)
+    que (1.0.0.beta3)
+    rack (2.0.7)
+    rack-protection (2.0.7)
       rack
     sequel (5.5.0)
-    sinatra (2.0.0)
+    sinatra (2.0.7)
       mustermann (~> 1.0)
       rack (~> 2.0)
-      rack-protection (= 2.0.0)
+      rack-protection (= 2.0.7)
       tilt (~> 2.0)
-    tilt (2.0.8)
+    tilt (2.0.10)
 
 PLATFORMS
   ruby
