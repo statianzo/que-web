@@ -43,18 +43,6 @@ require "que/web"
 mount Que::Web => "/que"
 ```
 
-#### Rails 5.0
-
-You must use the master branch of Sinatra for `que-web`.
-In your gemfile:
-
-```
-gem 'que-web'
-gem 'sinatra', git: 'https://github.com/sinatra/sinatra'
-```
-
-See https://github.com/sinatra/sinatra/issues/1071
-
 ### Authentication
 
 #### Devise
