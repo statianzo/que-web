@@ -32,7 +32,7 @@
         </tr>
         <tr>
           <th>Args</th>
-          <td><pre><%= @job.args.map(&:inspect).join(', ') %></pre></td>
+          <td><pre><%= JSON.pretty_generate(@job.args) %></pre></td>
         </tr>
         <tr>
           <th>Last Error</th>
