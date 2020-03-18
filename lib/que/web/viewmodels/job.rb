@@ -13,5 +13,14 @@ module Que::Web::Viewmodels
     def past_due?(relative_to = Time.now)
       run_at < relative_to
     end
+
+    def humanized_job_class
+      case job_class
+      when "ActiveJob::QueueAdapters::QueAdapter::JobWrapper"
+        args.first[:job_class]
+      else
+        job_class
+      end
+    end
   end
 end

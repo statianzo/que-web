@@ -18,6 +18,18 @@ describe Que::Web::Viewmodels::Job do
     subject.queue.must_equal source_job[:queue]
   end
 
+  describe 'humanized_job_class' do
+    it 'returns job class on unknown wrapper' do
+      _(subject.humanized_job_class).must_equal "SuccessJob"
+    end
+
+    it 'returns wrapped job class for Active Job' do
+      source = source_job.merge(job_class: "ActiveJob::QueueAdapters::QueAdapter::JobWrapper", args: [job_class: "MyJob"])
+      job = Que::Web::Viewmodels::Job.new(source)
+      _(job.humanized_job_class).must_equal "MyJob"
+    end
+  end
+
   describe 'schedule' do
     it 'is past due when run_at is behind' do
       subject.must_be :past_due?

@@ -26,7 +26,7 @@
               <a href="<%= link_to "jobs/#{job.id}" %>"><%== relative_time job.run_at %></a>
               <%== erb :_past_due, locals: {job: job}%>
             </td>
-            <td><%= job.job_class %></td>
+            <td><%= job.humanized_job_class %></td>
             <td><%= job.queue %></td>
             <td><pre><%= format_args job %></pre></td>
             <td>
