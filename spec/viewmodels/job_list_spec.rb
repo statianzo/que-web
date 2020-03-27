@@ -15,16 +15,15 @@ describe Que::Web::Viewmodels::JobList do
   let(:subject) { Que::Web::Viewmodels::JobList.new([job], pager) }
 
   it "maps jobs" do
-    subject.page_jobs.length.must_equal 1
-    subject.page_jobs.first.queue.must_equal "foo"
+    _(subject.page_jobs.length).must_equal 1
+    _(subject.page_jobs.first.queue).must_equal "foo"
   end
 
   it "exposes pager" do
-    subject.pager.must_equal pager
+    _(subject.pager).must_equal pager
   end
 
   it "maps total from pager" do
-    subject.total.must_equal pager.total
+    _(subject.total).must_equal pager.total
   end
-
 end

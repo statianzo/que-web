@@ -12,6 +12,6 @@ describe Que::Web::Viewmodels::Dashboard do
   let(:subject) { Que::Web::Viewmodels::Dashboard.new(dashboard_stats) }
 
   it 'passes through values' do
-    subject.scheduled.must_equal 2
+    _(subject.scheduled).must_equal 2
   end
 end

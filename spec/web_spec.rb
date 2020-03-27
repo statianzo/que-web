@@ -23,13 +23,13 @@ describe Que::Web::Helpers do
     it 'returns the truncated first line of the last error' do
       message = 'This is a really long exception message that should get truncated'
       last_error = ([message] + caller).join("\n")
-      subject.format_error(
+      _(subject.format_error(
         error_job(last_error)
-      ).must_equal 'This is a really long exception...'
+      )).must_equal 'This is a really long exception...'
     end
 
     it 'handles empty strings as the last error' do
-      subject.format_error(error_job('')).must_equal ''
+      _(subject.format_error(error_job(''))).must_equal ''
     end
   end
 
@@ -47,7 +47,7 @@ describe Que::Web::Helpers do
       let(:params) { {} }
 
       it 'returns all the jobs' do
-        subject.search_running(jobs).must_equal(jobs)
+        _(subject.search_running(jobs)).must_equal(jobs)
       end
     end
 
@@ -55,7 +55,7 @@ describe Que::Web::Helpers do
       let(:search) { '' }
 
       it 'returns all the jobs' do
-        subject.search_running(jobs).must_equal(jobs)
+        _(subject.search_running(jobs)).must_equal(jobs)
       end
     end
 
@@ -63,7 +63,7 @@ describe Que::Web::Helpers do
       let(:search) { 'A' }
 
       it 'returns only the jobs whose class matches the search' do
-        subject.search_running(jobs).must_equal(
+        _(subject.search_running(jobs)).must_equal(
           [
             { job_class: 'JobClassA' },
             { job_class: 'JobClassA2' }
