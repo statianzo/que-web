@@ -2,14 +2,12 @@ PATH
   remote: ../..
   specs:
     que-web (0.8.0)
-      erubis
       que (~> 1.0.0.beta3)
       sinatra
 
 GEM
   remote: https://rubygems.org/
   specs:
-    erubis (2.7.0)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
     pg (1.2.3)

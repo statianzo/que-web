@@ -7,9 +7,9 @@
   <link rel="stylesheet" href="<%= root_path %>styles/application.css" />
 </head>
 <body>
-  <%== erb :_navbar %>
-  <%== erb :_flash %>
-  <%== yield %>
+  <%= erb :_navbar %>
+  <%= erb :_flash %>
+  <%= yield %>
   <script src="<%= root_path %>js/jquery.min.js"></script>
   <script src="<%= root_path %>js/jquery.timeago.min.js"></script>
   <script>

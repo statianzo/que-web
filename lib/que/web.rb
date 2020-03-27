@@ -1,5 +1,5 @@
 require "sinatra/base"
-require "erubis"
+require "cgi"
 
 module Que
   class Web < Sinatra::Base
@@ -206,6 +206,13 @@ module Que
         hash = session[FLASH_KEY] ||= {}
         hash[level] = val
       end
+
+      def html_escape(text)
+        return if text.nil?
+
+        CGI.escape_html(text)
+      end
+      alias h html_escape
     end
     helpers Helpers
   end

@@ -22,8 +22,8 @@
         <tr>
           <th>Run At</th>
           <td>
-            <%== relative_time @job.run_at %>
-            <%== erb :_past_due, locals: {job: @job} %>
+            <%= relative_time @job.run_at %>
+            <%= erb :_past_due, locals: {job: @job} %>
           </td>
         </tr>
         <tr>
@@ -32,13 +32,13 @@
         </tr>
         <tr>
           <th>Args</th>
-          <td><pre><%= JSON.pretty_generate(@job.args) %></pre></td>
+          <td><pre><%= h JSON.pretty_generate(@job.args) %></pre></td>
         </tr>
         <tr>
           <th>Last Error</th>
           <td>
-            <pre><%= @job.last_error_message %></pre>
-            <pre><%= @job.last_error_backtrace %></pre>
+            <pre><%= h @job.last_error_message %></pre>
+            <pre><%= h @job.last_error_backtrace %></pre>
           </td>
         </tr>
       </tbody>

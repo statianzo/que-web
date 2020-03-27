@@ -22,7 +22,7 @@ end
 
 map '/xss' do
   run lambda { |env|
-    FailJob.enqueue '<script>alert("xss")</script>', {name: '<script>alert("xss")', age: 20, numbers: [10]*50}
+    FailJob.enqueue "<script>alert('xss')</script>", {name: "<script>alert('xss')", age: 20, numbers: [10]*50}
     [200, {}, ['Failing job queued']]
   }
 end
@@ -41,7 +41,6 @@ map '/slow' do
   }
 end
 
-
 map '/delayslow' do
   run lambda { |env|
     SlowJob.enqueue 'arg1', {name: 'delayslow', age: 20}, run_at: Time.now + 10
@@ -52,4 +51,3 @@ end
 run lambda { |env|
   [200, {}, ['Hello']]
 }
-
