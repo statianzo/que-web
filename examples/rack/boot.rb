@@ -7,9 +7,8 @@ require 'securerandom'
 
 Que.logger = Logger.new(STDOUT)
 Que.logger.level = Logger::INFO
-Que.connection = Sequel.connect "postgres://localhost/quewebtest", max_connections: Que.worker_count + 1
-Que.migrate!
-Que.mode = :async
+Que.connection = Sequel.connect("postgres://localhost/quewebtest", max_connections: 1)
+Que.migrate!(version: 4)
 $stdout.sync = true
 
 class FailJob < Que::Job
@@ -31,4 +30,3 @@ class SlowJob < Que::Job
     sleep 15
   end
 end
-
