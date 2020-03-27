@@ -14,8 +14,8 @@ describe Que::Web::Viewmodels::Job do
   let(:subject) { Que::Web::Viewmodels::Job.new(source_job) }
 
   it 'maps fields from source' do
-    subject.priority.must_equal source_job[:priority]
-    subject.queue.must_equal source_job[:queue]
+    _(subject.priority).must_equal source_job[:priority]
+    _(subject.queue).must_equal source_job[:queue]
   end
 
   describe 'humanized_job_class' do
@@ -32,12 +32,12 @@ describe Que::Web::Viewmodels::Job do
 
   describe 'schedule' do
     it 'is past due when run_at is behind' do
-      subject.must_be :past_due?
+      _(subject).must_be :past_due?
     end
 
     it 'is not past due when run_at is ahead of now' do
       subject.run_at = Time.now + 3600
-      subject.wont_be :past_due?
+      _(subject).wont_be :past_due?
     end
   end
 end
