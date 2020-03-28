@@ -52,4 +52,12 @@ describe Que::Web::Helpers do
       _(search_param_for(search)).must_equal search
     end
   end
+
+  describe '#escape_html' do
+    it 'prevents XSS' do
+      _(subject_with_attributes.h("<sript>alert('XSS')</script>")).must_equal(
+        "&lt;sript&gt;alert(&#39;XSS&#39;)&lt;/script&gt;"
+      )
+    end
+  end
 end

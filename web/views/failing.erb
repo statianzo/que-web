@@ -3,7 +3,7 @@
     <h1><%= @list.total %> Failing Job<%= @list.total == 1 ? "" : "s" %></h1>
   </div>
   <div class="small-12 medium-4 columns">
-    <%== erb :_search %>
+    <%= erb :_search %>
   </div>
 </div>
 <div class="row">
@@ -25,14 +25,14 @@
         <% @list.page_jobs.each do |job| %>
           <tr>
             <td><a href="<%= link_to "jobs/#{job.id}" %>">
-              <%== relative_time job.run_at %></a>
-              <%== erb :_past_due, locals: {job: job} %>
+              <%= h relative_time job.run_at %></a>
+              <%= erb :_past_due, locals: {job: job} %>
             </td>
             <td><%= job.error_count %></td>
-            <td><%= job.humanized_job_class %></td>
+            <td><%= h job.humanized_job_class %></td>
             <td><%= job.queue %></td>
-            <td><pre><%= format_args job %></pre></td>
-            <td><%= format_error job %></pre></td>
+            <td><pre><%= h format_args job %></pre></td>
+            <td><pre><%= h format_error job %></pre></td>
             <td>
               <form action="<%= link_to "jobs/#{job.id}" %>" method="post">
                 <input type="hidden" name="_method" value="put" />
@@ -54,7 +54,7 @@
 </div>
 <div class="row">
   <div class="small-8 columns">
-    <%== erb :_pager %>
+    <%= erb :_pager %>
   </div>
   <% if @list.total > 0 %>
     <div class="small-4 columns text-right">
