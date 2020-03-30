@@ -1,4 +1,11 @@
 ### Unreleased
+#### Added:
+- Display real job class when wrapped by ActiveJob
+- Updated foundation CSS to latest 5.x version
+- Removed erubis gem dependency
+
+#### Fixed:
+- Fixed minitest deprecation warnings
 
 ### 0.8 - 2018-09-21
 
