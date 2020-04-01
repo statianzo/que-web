@@ -11,7 +11,6 @@ module Que
     set :root, File.expand_path("../../../web", __FILE__)
     set :public_folder, proc { "#{root}/public" }
     set :views, proc { File.expand_path("views", root) }
-    set :erb, :escape_html => true
 
     get "/" do
       stats = Que.execute SQL[:dashboard_stats], [search]
