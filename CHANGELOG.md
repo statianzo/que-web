@@ -1,4 +1,8 @@
-### Unreleased
+### 0.9.1 - 2020-04-01
+#### Fixed:
+- Fixed rendering HTML
+
+### 0.9.0 - 2020-03-31
 #### Added:
 - Display real job class when wrapped by ActiveJob
 - Updated foundation CSS to latest 5.x version
