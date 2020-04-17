@@ -24,6 +24,7 @@ def reschedule_all_jobs_query(scope)
     FROM target
     WHERE target.locked
     AND target.id = que_jobs.id
+    AND target.finished_at is NULL
     RETURNING pg_advisory_unlock(target.id)
   SQL
 end
@@ -35,6 +36,7 @@ def delete_jobs_query(scope)
     USING target
     WHERE target.locked
     AND target.id = que_jobs.id
+    AND target.finished_at is NULL
     RETURNING pg_advisory_unlock(target.id)
   SQL
 end
@@ -43,8 +45,8 @@ Que::Web::SQL = {
   dashboard_stats: <<-SQL.freeze,
     SELECT count(*)                    AS total,
            count(locks.job_id)         AS running,
-           coalesce(sum((error_count > 0 AND locks.job_id IS NULL)::int), 0) AS failing,
-           coalesce(sum((error_count = 0 AND locks.job_id IS NULL)::int), 0) AS scheduled
+           coalesce(sum((error_count > 0 AND locks.job_id IS NULL AND finished_at is NULL)::int), 0) AS failing,
+           coalesce(sum((error_count = 0 AND locks.job_id IS NULL AND finished_at is NULL)::int), 0) AS scheduled
     FROM que_jobs
     LEFT JOIN (
       SELECT (classid::bigint << 32) + objid::bigint AS job_id
@@ -62,7 +64,7 @@ Que::Web::SQL = {
       FROM pg_locks
       WHERE locktype = 'advisory'
     ) locks ON (que_jobs.id=locks.job_id)
-    WHERE locks.job_id IS NULL AND error_count > 0 AND job_class LIKE ($3)
+    WHERE locks.job_id IS NULL AND error_count > 0 AND finished_at is NULL AND job_class LIKE ($3)
     ORDER BY run_at
     LIMIT $1::int
     OFFSET $2::int
@@ -75,7 +77,7 @@ Que::Web::SQL = {
       FROM pg_locks
       WHERE locktype = 'advisory'
     ) locks ON (que_jobs.id=locks.job_id)
-    WHERE locks.job_id IS NULL AND error_count = 0 AND job_class LIKE ($3)
+    WHERE locks.job_id IS NULL AND error_count = 0 AND finished_at is NULL AND job_class LIKE ($3)
     ORDER BY run_at
     LIMIT $1::int
     OFFSET $2::int
