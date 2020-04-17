@@ -25,7 +25,7 @@
         <% @list.page_jobs.each do |job| %>
           <tr>
             <td><a href="<%= link_to "jobs/#{job.id}" %>">
-              <%= h relative_time job.run_at %></a>
+              <%= relative_time job.run_at %></a>
               <%= erb :_past_due, locals: {job: job} %>
             </td>
             <td><%= job.error_count %></td>

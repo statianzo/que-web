@@ -1,7 +1,7 @@
 PATH
   remote: ../..
   specs:
-    que-web (0.9.0)
+    que-web (0.9.1)
       que (~> 1.0.0.beta3)
       sinatra
 
@@ -16,7 +16,7 @@ GEM
     rack-protection (2.0.8.1)
       rack
     ruby2_keywords (0.0.2)
-    sequel (5.30.0)
+    sequel (5.31.0)
     sinatra (2.0.8.1)
       mustermann (~> 1.0)
       rack (~> 2.0)
