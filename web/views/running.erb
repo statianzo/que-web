@@ -20,10 +20,12 @@
       <tbody>
         <% @list.page_jobs.each do |job| %>
           <tr>
-            <td><%= relative_time job.run_at %></td>
+            <td>
+              <a href="<%= link_to "jobs/#{job.id}" %>"><%= relative_time job.run_at %></a>
+            </td>
             <td><%= h job.humanized_job_class %></td>
             <td><%= job.queue %></td>
-            <td><pre><%= h job.args %></pre></td>
+            <td><pre><%= h format_args(job) %></pre></td>
           </tr>
         <% end %>
       </tbody>
