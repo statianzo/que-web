@@ -1,4 +1,4 @@
-### 0.9.2 - unreleased
+### 0.9.2 - 2020-04-24
 #### Fixed:
 - Fixed rendering "running" page
 - Fixed displaying relative time on "failing" page
