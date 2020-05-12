@@ -1,0 +1,30 @@
+<div class="row">
+  <div class="small-12 medium-8 columns">
+    <h1>Events</h1>
+  </div>
+  <div class="small-12 medium-4 columns">
+    <%= erb :_search %>
+  </div>
+</div>
+<div class="row">
+  <a class="small-12 large-6 columns" href="<%= link_to 'chi_events' %>">
+    <div class="dashboard-stat running">
+      <div class="cell">
+        <h2>Events</h2>
+        <span class="dashboard-value">
+          <%= @events.total %>
+        </span>
+      </div>
+    </div>
+  </a>
+  <a class="small-12 large-6 columns" href="<%= link_to 'chi_remote_events' %>">
+    <div class="dashboard-stat failing">
+      <div class="cell">
+        <h2>Remote Events</h2>
+        <span class="dashboard-value">
+          <%= @events.remote %>
+        </span>
+      </div>
+    </div>
+  </a>
+</div>

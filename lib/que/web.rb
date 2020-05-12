@@ -3,7 +3,7 @@ require "cgi"
 
 module Que
   class Web < Sinatra::Base
-    PAGE_SIZE = 10
+    PAGE_SIZE = 20
     FLASH_KEY = 'que.web.flash'.freeze
 
     use Rack::MethodOverride
@@ -16,6 +16,28 @@ module Que
       stats = Que.execute SQL[:dashboard_stats], [search]
       @dashboard = Viewmodels::Dashboard.new(stats[0])
       erb :index
+    end
+
+    get "/events" do
+      stats = Que.execute SQL[:event_dashboard_stats], [search]
+      @events = Viewmodels::EventDashboard.new(stats[0])
+      erb :events
+    end
+
+    get "/chi_events" do
+      stats = Que.execute SQL[:event_dashboard_stats], [search]
+      pager = get_pager stats[0][:total]
+      events = Que.execute SQL[:chi_events], [pager.page_size, pager.offset, search]
+      @list = Viewmodels::EventList.new(events, pager)
+      erb :chi_events
+    end
+
+    get "/chi_remote_events" do
+      stats = Que.execute SQL[:event_dashboard_stats], [search]
+      pager = get_pager stats[0][:remote]
+      events = Que.execute SQL[:chi_remote_events], [pager.page_size, pager.offset, search]
+      @list = Viewmodels::RemoteEventList.new(events, pager)
+      erb :chi_remote_events
     end
 
     get "/running" do
@@ -31,6 +53,14 @@ module Que
       failing_jobs = Que.execute SQL[:failing_jobs], [pager.page_size, pager.offset, search]
       @list = Viewmodels::JobList.new(failing_jobs, pager)
       erb :failing
+    end
+
+    get "/errored" do
+      stats = Que.execute SQL[:dashboard_stats], [search]
+      pager = get_pager stats[0][:errored]
+      errored_jobs = Que.execute SQL[:errored_jobs], [pager.page_size, pager.offset, search]
+      @list = Viewmodels::JobList.new(errored_jobs, pager)
+      erb :errored
     end
 
     get "/scheduled" do

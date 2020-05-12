@@ -7,13 +7,13 @@ SQL
 lock_all_failing_jobs_sql = <<-SQL.freeze
     SELECT id, pg_try_advisory_lock(id) AS locked
     FROM que_jobs
-    WHERE error_count > 0
+    WHERE error_count > 0 AND finished_at is NULL
 SQL
 
 lock_all_scheduled_jobs_sql = <<-SQL.freeze
     SELECT id, pg_try_advisory_lock(id) AS locked
     FROM que_jobs
-    WHERE error_count = 0
+    WHERE error_count = 0 AND finished_at is NULL
 SQL
 
 def reschedule_all_jobs_query(scope)
@@ -23,8 +23,7 @@ def reschedule_all_jobs_query(scope)
     SET run_at = $1::timestamptz
     FROM target
     WHERE target.locked
-    AND target.id = que_jobs.id
-    AND target.finished_at is NULL
+    AND target.id = que_jobs.id and que_jobs.finished_at is NULL
     RETURNING pg_advisory_unlock(target.id)
   SQL
 end
@@ -36,7 +35,6 @@ def delete_jobs_query(scope)
     USING target
     WHERE target.locked
     AND target.id = que_jobs.id
-    AND target.finished_at is NULL
     RETURNING pg_advisory_unlock(target.id)
   SQL
 end
@@ -46,7 +44,8 @@ Que::Web::SQL = {
     SELECT count(*)                    AS total,
            count(locks.job_id)         AS running,
            coalesce(sum((error_count > 0 AND locks.job_id IS NULL AND finished_at is NULL)::int), 0) AS failing,
-           coalesce(sum((error_count = 0 AND locks.job_id IS NULL AND finished_at is NULL)::int), 0) AS scheduled
+           coalesce(sum((error_count = 0 AND locks.job_id IS NULL AND finished_at is NULL)::int), 0) AS scheduled,
+           coalesce(sum((error_count > 0 AND finished_at is not NULL)::int), 0) AS errored
     FROM que_jobs
     LEFT JOIN (
       SELECT (classid::bigint << 32) + objid::bigint AS job_id
@@ -55,6 +54,35 @@ Que::Web::SQL = {
     ) locks ON (que_jobs.id=locks.job_id)
     WHERE
       job_class LIKE ($1)
+  SQL
+  event_dashboard_stats: <<-SQL.freeze,
+    SELECT count(distinct chi_events.id) AS total,
+         count(remote.id)                AS remote
+    FROM chi_events
+    LEFT JOIN (
+      SELECT *
+      FROM chi_remote_events
+    ) remote ON ((remote.data->'chi_event'->>'id')::uuid = chi_events.id)
+    WHERE
+      chi_events.type LIKE ($1)
+  SQL
+  chi_events: <<-SQL.freeze,
+    SELECT *
+    FROM chi_events
+    WHERE
+      type LIKE ($3)
+    ORDER BY event_order desc
+    LIMIT $1::int
+    OFFSET $2::int
+  SQL
+  chi_remote_events: <<-SQL.freeze,
+    SELECT *
+    FROM chi_remote_events
+    WHERE
+      type LIKE ($3) or gateway LIKE ($3)
+    ORDER BY event_order desc
+    LIMIT $1::int
+    OFFSET $2::int
   SQL
   failing_jobs: <<-SQL.freeze,
     SELECT que_jobs.*
@@ -66,6 +94,14 @@ Que::Web::SQL = {
     ) locks ON (que_jobs.id=locks.job_id)
     WHERE locks.job_id IS NULL AND error_count > 0 AND finished_at is NULL AND job_class LIKE ($3)
     ORDER BY run_at
+    LIMIT $1::int
+    OFFSET $2::int
+  SQL
+  errored_jobs: <<-SQL.freeze,
+    SELECT que_jobs.*
+    FROM que_jobs
+    WHERE error_count > 0 AND finished_at is not NULL AND job_class LIKE ($3)
+    ORDER BY finished_at
     LIMIT $1::int
     OFFSET $2::int
   SQL
@@ -91,7 +127,7 @@ Que::Web::SQL = {
     SET run_at = $2::timestamptz
     FROM target
     WHERE target.locked
-    AND target.id = que_jobs.id
+    AND target.id = que_jobs.id and que_jobs.finished_at is NULL
     RETURNING pg_advisory_unlock(target.id)
   SQL
   reschedule_all_scheduled_jobs: reschedule_all_jobs_query(lock_all_scheduled_jobs_sql),

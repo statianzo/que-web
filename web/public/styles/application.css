@@ -37,6 +37,10 @@
   background: #E8866C;
 }
 
+.dashboard-stat.errored {
+  background: #e8c56c;
+}
+
 .dashboard-value {
   font-size: 5em;
   line-height: 1em;

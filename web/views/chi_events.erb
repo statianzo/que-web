@@ -1,0 +1,48 @@
+<div class="row">
+  <div class="small-12 medium-8 columns">
+    <h1><%= @list.total %> Chi Event<%= @list.total == 1 ? "" : "s" %></h1>
+  </div>
+  <div class="small-12 medium-4 columns">
+    <%= erb :_search %>
+  </div>
+</div>
+<div class="row">
+  <div class="small-12 columns">
+    <table>
+      <thead>
+        <tr>
+          <th>id</th>
+          <th>type</th>
+          <th>data</th>
+          <th>metadata</th>
+          <th>event_order</th>
+          <th>processed</th>
+          <th>created_at</th>
+          <th>processed_at</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @list.events.each do |event| %>
+          <tr>
+            <td>
+              <a href="<%= link_to "events/#{event.id}" %>"><%= event.id %></a>
+            </td>
+            <td><%= event.type %></td>
+            <td><%= event.data %></td>
+            <td><%= event.metadata %></td>
+            <td><%= event.event_order %></td>
+            <td><%= event.processed %></td>
+            <td><%= event.created_at %></td>
+            <td><%= event.processed_at %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+<div class="row">
+  <div class="small-8 columns">
+    <%= erb :_pager %>
+  </div>
+</div>

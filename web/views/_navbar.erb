@@ -1,14 +1,13 @@
 <nav class="top-bar" data-topbar role="navigation">
 <ul class="title-area">
   <li class="name">
-    <h1><a href="<%= path_with_search root_path %>">Que</a></h1>
+    <h1><a href="<%= path_with_search root_path %>">Chi</a></h1>
   </li>
 </ul>
 <section class="top-bar-section">
   <ul class="left">
-    <li class="<%= active_class('running') %>"><a href="<%= link_to 'running' %>"><span>Running</span></a></li>
-    <li class="<%= active_class('scheduled') %>"><a href="<%= link_to 'scheduled' %>"><span>Scheduled</span></a></li>
-    <li class="<%= active_class('failing') %>"><a href="<%= link_to 'failing' %>"><span>Failing</span></a></li>
+    <li class="<%= active_class('jobs(?!.*events).*$') %>"><a href="<%= link_to '/' %>"><span>Jobs</span></a></li>
+    <li class="<%= active_class('events') %>"><a href="<%= link_to 'events' %>"><span>Events</span></a></li>
   </ul>
   <ul class="right version">
     <li>Que <%= Que::VERSION %></li>

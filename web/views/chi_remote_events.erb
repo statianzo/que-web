@@ -1,0 +1,46 @@
+<div class="row">
+  <div class="small-12 medium-8 columns">
+    <h1><%= @list.total %> Chi Remote Event<%= @list.total == 1 ? "" : "s" %></h1>
+  </div>
+  <div class="small-12 medium-4 columns">
+    <%= erb :_search %>
+  </div>
+</div>
+<div class="row">
+  <div class="small-12 columns">
+    <table>
+      <thead>
+        <tr>
+          <th>id</th>
+          <th>type</th>
+          <th>gateway</th>
+          <th>event_order</th>
+          <th>remote_event_order</th>
+          <th>created_at</th>
+          <th>processed_at</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @list.events.each do |event| %>
+          <tr>
+            <td>
+              <a href="<%= link_to "remote_events/#{event.id}" %>"><%= event.id %></a>
+            </td>
+            <td><%= event.type %></td>
+            <td><%= event.gateway %></td>
+            <td><%= event.event_order %></td>
+            <td><%= event.remote_event_order %></td>
+            <td><%= event.created_at %></td>
+            <td><%= event.processed_at %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+<div class="row">
+  <div class="small-8 columns">
+    <%= erb :_pager %>
+  </div>
+</div>
