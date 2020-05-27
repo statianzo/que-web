@@ -53,6 +53,7 @@ Que::Web::SQL = {
     ) locks ON (que_jobs.id=locks.job_id)
     WHERE
       job_class LIKE ($1)
+      OR que_jobs.args #>> '{0, job_class}' ILIKE ($1)
   SQL
   failing_jobs: <<-SQL.freeze,
     SELECT que_jobs.*
@@ -62,7 +63,12 @@ Que::Web::SQL = {
       FROM pg_locks
       WHERE locktype = 'advisory'
     ) locks ON (que_jobs.id=locks.job_id)
-    WHERE locks.job_id IS NULL AND error_count > 0 AND job_class LIKE ($3)
+    WHERE locks.job_id IS NULL
+      AND error_count > 0
+      AND (
+        job_class LIKE ($3)
+        OR que_jobs.args #>> '{0, job_class}' ILIKE ($3)
+      )
     ORDER BY run_at
     LIMIT $1::int
     OFFSET $2::int
@@ -75,7 +81,12 @@ Que::Web::SQL = {
       FROM pg_locks
       WHERE locktype = 'advisory'
     ) locks ON (que_jobs.id=locks.job_id)
-    WHERE locks.job_id IS NULL AND error_count = 0 AND job_class LIKE ($3)
+    WHERE locks.job_id IS NULL
+      AND error_count = 0
+      AND (
+        job_class LIKE ($3)
+        OR que_jobs.args #>> '{0, job_class}' ILIKE ($3)
+      )
     ORDER BY run_at
     LIMIT $1::int
     OFFSET $2::int
