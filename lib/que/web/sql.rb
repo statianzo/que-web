@@ -20,7 +20,8 @@ def reschedule_all_jobs_query(scope)
   <<-SQL.freeze
     WITH target AS (#{scope})
     UPDATE que_jobs
-    SET run_at = $1::timestamptz
+    SET run_at = $1::timestamptz,
+        expired_at = NULL
     FROM target
     WHERE target.locked
     AND target.id = que_jobs.id
@@ -97,7 +98,8 @@ Que::Web::SQL = {
   reschedule_job: <<-SQL.freeze,
     WITH target AS (#{lock_job_sql})
     UPDATE que_jobs
-    SET run_at = $2::timestamptz
+    SET run_at = $2::timestamptz,
+        expired_at = NULL
     FROM target
     WHERE target.locked
     AND target.id = que_jobs.id
