@@ -1,3 +1,9 @@
+### 0.9.3 - 2020-06-17
+#### Added:
+- Set expired_at=NULL when rescheduling job
+- Make job search case-insensitive
+- Allow to search by ActiveJob class name
+
 ### 0.9.2 - 2020-04-24
 #### Fixed:
 - Fixed rendering "running" page
