@@ -4,7 +4,7 @@ GEM
     erubis (2.7.0)
     mustermann (1.0.3)
     pg (1.0.0)
-    puma (3.12.3)
+    puma (3.12.6)
     que (0.14.2)
     que-web (0.7.0)
       erubis
