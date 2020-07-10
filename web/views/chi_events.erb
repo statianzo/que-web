@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row chi-events">
   <div class="small-12 medium-8 columns">
     <h1><%= @list.total %> Chi Event<%= @list.total == 1 ? "" : "s" %></h1>
   </div>
@@ -6,7 +6,7 @@
     <%= erb :_search %>
   </div>
 </div>
-<div class="row">
+<div class="row chi-events">
   <div class="small-12 columns">
     <table>
       <thead>
@@ -28,8 +28,36 @@
               <a href="<%= link_to "events/#{event.id}" %>"><%= event.id %></a>
             </td>
             <td><%= event.type %></td>
-            <td><pre><%= JSON.pretty_generate(event.data) %></pre></td>
-            <td><pre><%= JSON.pretty_generate(event.metadata) %></pre></td>
+            <td>
+                <table>
+                  <% event.data.keys.each do |key| %>
+                    <tr>
+                      <td>
+                        <b><%= key %></b>
+                      </td>
+                      <td>
+                        <%= event.data[key] %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </table>
+            </td>
+            <td>
+              <div class="overflow-cell">
+                <table>
+                  <% event.metadata.keys.each do |key| %>
+                    <tr>
+                      <td>
+                        <b><%= key %></b>
+                      </td>
+                      <td>
+                        <%= event.metadata[key] %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </table>
+              </div>
+            </td>
             <td><%= event.event_order %></td>
             <td><%= event.processed %></td>
             <td><%= event.created_at %></td>
