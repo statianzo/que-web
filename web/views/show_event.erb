@@ -1,0 +1,41 @@
+<div class="row">
+  <div class="small-12 columns">
+    <h1>Event <%= @event.id %></h1>
+  </div>
+</div>
+<div class="row">
+  <div class="small-12 columns">
+    <table>
+      <tbody>
+        <tr>
+          <th>Type</th>
+          <td><%= @event.type %></td>
+        </tr>
+        <tr>
+          <th>Data</th>
+          <td><pre><%= JSON.pretty_generate(@event.data) %></pre></td>
+        </tr>
+        <tr>
+          <th>Metadata</th>
+          <td><pre><%= JSON.pretty_generate(@event.metadata) %></pre></td>
+        </tr>
+        <tr>
+          <th>Event Order</th>
+          <td><%= @event.event_order %></td>
+        </tr>
+        <tr>
+          <th>Processed</th>
+          <td><%= @event.processed %></td>
+        </tr>
+        <tr>
+          <th>Created At</th>
+          <td><%= @event.created_at %></td>
+        </tr>
+        <tr>
+          <th>Processed At</th>
+          <td><%= @event.processed_at %></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

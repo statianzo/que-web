@@ -28,8 +28,8 @@
               <a href="<%= link_to "events/#{event.id}" %>"><%= event.id %></a>
             </td>
             <td><%= event.type %></td>
-            <td><%= event.data %></td>
-            <td><%= event.metadata %></td>
+            <td><pre><%= JSON.pretty_generate(event.data) %></pre></td>
+            <td><pre><%= JSON.pretty_generate(event.metadata) %></pre></td>
             <td><%= event.event_order %></td>
             <td><%= event.processed %></td>
             <td><%= event.created_at %></td>
