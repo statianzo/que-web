@@ -24,6 +24,22 @@ module Que
       erb :events
     end
 
+    get "/events/:id" do |id|
+      event_id = id
+      
+      events = []
+      if event_id.present?
+        events = Que.execute SQL[:fetch_event], [event_id]
+      end
+
+      if events.empty?
+        redirect to "", 303
+      else
+        @event = Viewmodels::Event.new(events.first)
+        erb :show_event
+      end
+    end
+
     get "/chi_events" do
       stats = Que.execute SQL[:event_dashboard_stats], [search]
       pager = get_pager stats[0][:total]

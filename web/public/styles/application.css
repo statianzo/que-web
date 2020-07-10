@@ -84,3 +84,12 @@ i.subtle {
 .pagination {
   margin-top: 10px;
 }
+
+.row.chi-events {
+  margin: 0 auto 0 50px;
+}
+
+.overflow-cell {
+  max-height: 200px;
+  overflow: scroll;
+}
