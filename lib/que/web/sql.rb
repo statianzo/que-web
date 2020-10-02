@@ -70,7 +70,7 @@ Que::Web::SQL = {
         job_class ILIKE ($3)
         OR que_jobs.args #>> '{0, job_class}' ILIKE ($3)
       )
-    ORDER BY run_at
+    ORDER BY run_at, id
     LIMIT $1::int
     OFFSET $2::int
   SQL
@@ -88,7 +88,7 @@ Que::Web::SQL = {
         job_class ILIKE ($3)
         OR que_jobs.args #>> '{0, job_class}' ILIKE ($3)
       )
-    ORDER BY run_at
+    ORDER BY run_at, id
     LIMIT $1::int
     OFFSET $2::int
   SQL

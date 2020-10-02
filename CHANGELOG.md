@@ -1,3 +1,7 @@
+### Unreleased
+#### Fixed:
+- Fixed inconsistent pagination when several jobs have the same `run_at`
+
 ### 0.9.3 - 2020-06-17
 #### Added:
 - Set expired_at=NULL when rescheduling job
