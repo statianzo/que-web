@@ -185,6 +185,7 @@ module Que
       end
 
       def relative_time(time)
+        time = Time.utc((t = Date._parse(time))[:year], t[:mon], t[:mday], t[:hour], t[:min], t[:sec]) if time.is_a?(String)
         %{<time class="timeago" datetime="#{time.utc.iso8601}">#{time.utc}</time>}
       end
 
