@@ -20,7 +20,8 @@ def reschedule_all_jobs_query(scope)
   <<-SQL.freeze
     WITH target AS (#{scope})
     UPDATE que_jobs
-    SET run_at = $1::timestamptz
+    SET run_at = $1::timestamptz,
+        expired_at = NULL
     FROM target
     WHERE target.locked
     AND target.id = que_jobs.id and que_jobs.finished_at is NULL
@@ -53,7 +54,8 @@ Que::Web::SQL = {
       WHERE locktype = 'advisory'
     ) locks ON (que_jobs.id=locks.job_id)
     WHERE
-      job_class LIKE ($1)
+      job_class ILIKE ($1)
+      OR que_jobs.args #>> '{0, job_class}' ILIKE ($1)
   SQL
   event_dashboard_stats: <<-SQL.freeze,
     SELECT count(distinct chi_events.id) AS total,
@@ -92,8 +94,14 @@ Que::Web::SQL = {
       FROM pg_locks
       WHERE locktype = 'advisory'
     ) locks ON (que_jobs.id=locks.job_id)
-    WHERE locks.job_id IS NULL AND error_count > 0 AND finished_at is NULL AND job_class LIKE ($3)
-    ORDER BY run_at
+    WHERE locks.job_id IS NULL
+      AND error_count > 0
+      AND finished_at is NULL
+      AND (
+        job_class ILIKE ($3)
+        OR que_jobs.args #>> '{0, job_class}' ILIKE ($3)
+      )
+    ORDER BY run_at, id
     LIMIT $1::int
     OFFSET $2::int
   SQL
@@ -113,8 +121,14 @@ Que::Web::SQL = {
       FROM pg_locks
       WHERE locktype = 'advisory'
     ) locks ON (que_jobs.id=locks.job_id)
-    WHERE locks.job_id IS NULL AND error_count = 0 AND finished_at is NULL AND job_class LIKE ($3)
-    ORDER BY run_at
+    WHERE locks.job_id IS NULL
+      AND error_count = 0
+      AND finished_at is NULL
+      AND (
+        job_class ILIKE ($3)
+        OR que_jobs.args #>> '{0, job_class}' ILIKE ($3)
+      )
+    ORDER BY run_at, id
     LIMIT $1::int
     OFFSET $2::int
   SQL
@@ -124,7 +138,8 @@ Que::Web::SQL = {
   reschedule_job: <<-SQL.freeze,
     WITH target AS (#{lock_job_sql})
     UPDATE que_jobs
-    SET run_at = $2::timestamptz
+    SET run_at = $2::timestamptz,
+        expired_at = NULL
     FROM target
     WHERE target.locked
     AND target.id = que_jobs.id and que_jobs.finished_at is NULL

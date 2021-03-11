@@ -109,7 +109,7 @@ module Que
         updated_rows = Que.execute SQL[:reschedule_job], [job_id, run_at]
         if updated_rows.empty?
           # Didn't get the advisory lock
-          set_flash "warning", "Job #{job_id} not rescheduled as it was already runnning"
+          set_flash "warning", "Job #{job_id} not rescheduled as it was already running"
         else
           set_flash "info", "Job #{job_id} rescheduled for #{run_at}"
         end
@@ -147,7 +147,7 @@ module Que
 
         if updated_rows.empty?
           # Didn't get the advisory lock
-          set_flash "warning", "Job #{job_id} not deleted as it was already runnning"
+          set_flash "warning", "Job #{job_id} not deleted as it was already running"
         else
           set_flash "info", "Job #{job_id} deleted"
         end

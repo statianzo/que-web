@@ -4,13 +4,13 @@ GEM
     erubis (2.7.0)
     mustermann (1.0.3)
     pg (1.0.0)
-    puma (3.12.3)
+    puma (3.12.6)
     que (0.14.2)
     que-web (0.7.0)
       erubis
       que (~> 0.8)
       sinatra
-    rack (2.0.8)
+    rack (2.2.3)
     rack-protection (2.0.7)
       rack
     sequel (5.5.0)
