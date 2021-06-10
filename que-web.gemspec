@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = "que-web"
-  spec.version       = "0.9.3"
+  spec.version       = "0.9.4"
   spec.authors       = ["Jason Staten", "Bruno Porto"]
   spec.email         = ["jstaten07@gmail.com", "brunotporto@gmail.com"]
   spec.summary       = %q{A web interface for the que queue}
@@ -19,6 +19,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "que", "~> 1.0.0.beta3"
   spec.add_dependency "sinatra"
+  spec.add_dependency "tilt-jbuilder"
 
   spec.add_development_dependency "bundler", ">= 1.6"
   spec.add_development_dependency "rake", ">= 10.0"

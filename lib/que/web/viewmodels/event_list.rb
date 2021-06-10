@@ -5,7 +5,7 @@ module Que::Web::Viewmodels
 
     def_delegators :@pager, :total, :next_page, :prev_page, :current_page, :page_count
 
-    def initialize(events, pager)
+    def initialize(events, pager = nil)
       @events = events.map { |e| Event.new(e) }
       @pager = pager
     end
