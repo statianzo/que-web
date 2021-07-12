@@ -1,72 +1,24 @@
-# que-web [![Build Status](https://travis-ci.org/statianzo/que-web.svg?branch=master)](https://travis-ci.org/statianzo/que-web)
+## SofwareLLC Docker Container for Que-Web
 
-que-web is a web UI to the [Que](https://github.com/chanks/que) job queue.
+#### Description
 
-![Que Web](https://raw.githubusercontent.com/statianzo/que-web/master/doc/queweb.png)
+Docker Container for Que-Web
+Gem Included: [que-web](https://github.com/statianzo/que-web)
+This will create the root endpoint for the Que-Web Interface
 
-## Installation
+#### Environment Variables
 
-Add this line to your application's Gemfile:
+- DATABASE_URL
+- PORT
 
-```ruby
-gem 'que-web'
+#### Build Instructions
+
+```bash
+ docker build -t sofware-que-web -f Dockerfile .
 ```
 
-And then execute:
+#### Run Instructions
 
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install que-web
-
-## Usage
-
-#### With `config.ru`
-
-Add in `config.ru`:
-
-```ruby
-require "que/web"
-
-map "/que" do
-  run Que::Web
-end
+```bash
+docker run --env-file=env_development -p 3002:<Environment PORT> sofware-que-web
 ```
-
-### Rails
-
-In `config/routes.rb`:
-
-```ruby
-require "que/web"
-mount Que::Web => "/que"
-```
-
-### Authentication
-
-#### Devise
-```ruby
-# config/routes.rb
-authenticate :user do
-  mount Que::Web, at: 'que'
-end
-```
-
-#### Basic HTTP auth
-
-In `config/initializers/queweb.rb`:
-```ruby
-Que::Web.use(Rack::Auth::Basic) do |user, password|
-  [user, password] == [ENV["QUEWEB_USERNAME"], ENV["QUEWEB_PASSWORD"]]
-end
-```
-Then add the two environment variables to your production environment.
-
-### Docker
-
-Run:
-```
-docker run -e DATABASE_URL=postgres://username:password@hostname/db_name -p 3002:8080 joevandyk/que-web
-```
-Or use docker/Dockerfile to build your own container.

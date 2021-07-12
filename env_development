@@ -1,0 +1,2 @@
+DATABASE_URL=postgres://postgres:postgres@host.docker.internal:5433/forge_development
+PORT=8282
