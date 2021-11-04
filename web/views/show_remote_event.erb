@@ -1,0 +1,51 @@
+<div class="row">
+  <div class="small-12 columns">
+    <h1>Event <%= @remote_event.id %></h1>
+  </div>
+</div>
+<div class="row">
+  <div class="small-12 columns">
+    <table>
+      <tbody>
+        <tr>
+          <th>Type</th>
+          <td><%= @remote_event.type %></td>
+        </tr>
+        <tr>
+          <th>Gateway</th>
+          <td><a href=<%= "#{@remote_event.gateway}/chi/events/" %>><%= @remote_event.gateway %></a></td>
+        </tr>
+        <tr>
+          <th>Data</th>
+          <td>
+          <a href=<%= "/chi/events/#{@remote_event.data["chi_event"]["id"]}" %>>
+            <pre>
+              <%= JSON.pretty_generate(@remote_event.data) %>
+            </pre>
+          </a>
+          </td>
+        </tr>
+        <tr>
+          <th>Metadata</th>
+          <td><pre><%= JSON.pretty_generate(@remote_event.meta) %></pre></td>
+        </tr>
+        <tr>
+          <th>Event Order</th>
+          <td><%= @remote_event.event_order %></td>
+        </tr>
+        <tr>
+          <th>Remote Event Order</th>
+          <td><%= @remote_event.remote_event_order %></td>
+        </tr>
+        <tr>
+          <th>Created At</th>
+          <td><%= @remote_event.created_at %></td>
+        </tr>
+        <tr>
+          <th>Processed At</th>
+          <td><%= @remote_event.processed_at %></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

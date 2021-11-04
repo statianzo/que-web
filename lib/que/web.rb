@@ -28,7 +28,7 @@ module Que
 
     get "/events/:id" do |id|
       event_id = id
-      
+
       events = []
       if event_id.present?
         events = Que.execute SQL[:fetch_event], [event_id]
@@ -64,6 +64,20 @@ module Que
       events = Que.execute SQL[:chi_remote_events], [pager.page_size, pager.offset, search]
       @list = Viewmodels::RemoteEventList.new(events, pager)
       erb :chi_remote_events
+    end
+
+    get "/chi_remote_events/:id" do
+      remote_event_id = id
+      return if remote_event_id.nil?
+
+      remote_events = Que.execute SQL[:fetch_remote_event], [remote_event_id]
+
+      if remote_events.empty?
+        redirect to "", 303
+      else
+        @remote_event = Viewmodels::RemoteEvent.new(remote_events.first)
+        erb :show_remote_event
+      end
     end
 
     get "/running" do
