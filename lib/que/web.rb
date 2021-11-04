@@ -66,7 +66,7 @@ module Que
       erb :chi_remote_events
     end
 
-    get "/chi_remote_events/:id" do
+    get "/chi_remote_events/:id" do |id|
       remote_event_id = id
       return if remote_event_id.nil?
 
