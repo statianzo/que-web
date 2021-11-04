@@ -18,7 +18,7 @@
         <tr>
           <th>Data</th>
           <td>
-          <a href=<%= "/chi/events/#{@remote_event.data["chi_event"]["id"]}" %>>
+          <a href=<%= "/chi/jobs/events/#{@remote_event.data[:chi_event][:id]}" %>>
             <pre>
               <%= JSON.pretty_generate(@remote_event.data) %>
             </pre>
