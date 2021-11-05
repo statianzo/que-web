@@ -23,7 +23,9 @@
       <tbody>
         <% @list.events.each do |event| %>
           <tr>
-            <td><%= link_to event.id, "/chi_remote_events/#{event.id}" %></td>
+            <td>
+              <a href="<%= link_to "chi_remote_events/#{event.id}" %>"><%= event.id %></a>
+            </td>
             <td><%= event.type %></td>
             <td><%= event.gateway %></td>
             <td><%= event.event_order %></td>
