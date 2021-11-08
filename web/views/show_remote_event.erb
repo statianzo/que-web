@@ -14,8 +14,8 @@
         <tr>
           <th>Local Event</th>
           <td>
-            <a href=<%= @local_event_url %>>
-              <%= "Local Event - #{@event_id}" %>
+            <a href=<%= @abstract_attributes.local_event_url %>>
+              <%= "Local Event - #{@abstract_attributes.event_id}" %>
             </a>
           </td>
         </tr>
@@ -24,18 +24,18 @@
           <td><a href=<%= "#{@remote_event.gateway}/chi/events/" %>><%= @remote_event.gateway %></a></td>
         </tr>
         <tr>
-          <th>Corresponding Remote <%= @external_remote_event_type %></th>
+          <th>Corresponding Remote <%= @abstract_attributes.external_remote_event_type %></th>
           <td>
-            <a href=<%= @external_remote_event_url %>>
-              <%= "Remote #{@external_remote_event_type} Event - #{@remote_event.id}" %>
+            <a href=<%= @abstract_attributes.external_remote_event_url %>>
+              <%= "Remote #{@abstract_attributes.external_remote_event_type} Event - #{@remote_event.id}" %>
             </a>
           </td>
         </tr>
         <tr>
           <th>External Event</th>
           <td>
-            <a href=<%= @external_event_url %>>
-              <%= "External Event - #{@event_id}" %>
+            <a href=<%= @abstract_attributes.external_event_url %>>
+              <%= "External Event - #{@abstract_attributes.event_id}" %>
             </a>
           </td>
         </tr>

@@ -7,7 +7,6 @@ module Que
     PAGE_SIZE = 20
     JSON_LIMIT = 500
     FLASH_KEY = 'que.web.flash'.freeze
-    TRANSMITTER_TYPE = "Chi::Remote::Transmitter"
 
     use Rack::MethodOverride
 
@@ -74,12 +73,7 @@ module Que
         redirect to "", 303
       else
         @remote_event = Viewmodels::RemoteEvent.new(remote_events.first)
-        @external_remote_event_type = remote_event_is_transmitter? ? "Receiver" : "Transmitter"
-        @external_remote_event_url = external_remote_event_url
-        @local_event_url = local_event_url
-        @external_event_url = external_event_url
-        @event_id = event_id_from_remote_data
-
+        @abstract_attributes = Viewmodels::RemoteEventAbstractAttributes.new(@remote_event, request.base_url)
         erb :show_remote_event
       end
     end
@@ -273,37 +267,6 @@ module Que
         else
           str
         end
-      end
-
-      def external_remote_event_url
-        "#{remote_event_gateway_base_url}/chi/jobs/chi_remote_events/#{@remote_event.id}"
-      end
-
-      def local_event_url
-        "/chi/jobs/events/#{event_id_from_remote_data}"
-      end
-
-      def external_event_url
-        "#{remote_event_gateway_base_url}/chi/jobs/events/#{event_id_from_remote_data}"
-      end
-
-      # Transmitter gateways have viable url (eg. 'http://accounts-contracts-api.homestars.int'),
-      # while receiver gateways are snake_case service name (eg. 'accounts_contracts_api')
-      def remote_event_gateway_base_url
-        if remote_event_is_transmitter?
-          @remote_event.gateway
-        else
-          tld = request.base_url.split('.').last
-          "http://#{@remote_event.gateway.gsub('_', '-')}.homestars.#{tld}"
-        end
-      end
-
-      def event_id_from_remote_data
-        @remote_event.data[:chi_event][:id]
-      end
-
-      def remote_event_is_transmitter?
-        @remote_event.type == TRANSMITTER_TYPE
       end
 
       def flash
