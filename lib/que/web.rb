@@ -7,6 +7,7 @@ module Que
     PAGE_SIZE = 20
     JSON_LIMIT = 500
     FLASH_KEY = 'que.web.flash'.freeze
+    TRANSMITTER_TYPE = "Chi::Remote::Transmitter"
 
     use Rack::MethodOverride
 
@@ -76,6 +77,8 @@ module Que
         redirect to "", 303
       else
         @remote_event = Viewmodels::RemoteEvent.new(remote_events.first)
+        @transmitter_type = TRANSMITTER_TYPE
+        @external_remote_event_url = "#{@remote_event.gateway}/chi/jobs/chi_remote_events/#{@remote_event.id}"
         erb :show_remote_event
       end
     end

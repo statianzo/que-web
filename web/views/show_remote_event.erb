@@ -12,17 +12,19 @@
           <td><%= @remote_event.type %></td>
         </tr>
         <tr>
+          <th>Remote <%= @remote_event.type == @transmitter_type  ? "Receiver" : "Transmitter"%></th>
+          <td><a href=<%= @external_remote_event_url %>><%= @external_remote_event_url %></a></td>
+        </tr>
+        <tr>
           <th>Gateway</th>
           <td><a href=<%= "#{@remote_event.gateway}/chi/events/" %>><%= @remote_event.gateway %></a></td>
         </tr>
         <tr>
           <th>Data</th>
           <td>
-          <a href=<%= "#{@remote_event.gateway if @remote_event.type.include?('Transmitter')}/chi/jobs/events/#{@remote_event.data[:chi_event][:id]}" %>>
-            <pre>
+           <pre>
               <%= JSON.pretty_generate(@remote_event.data) %>
             </pre>
-          </a>
           </td>
         </tr>
         <tr>
