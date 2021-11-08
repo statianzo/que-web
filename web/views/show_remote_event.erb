@@ -12,12 +12,32 @@
           <td><%= @remote_event.type %></td>
         </tr>
         <tr>
-          <th>Remote <%= @remote_event.type == @transmitter_type  ? "Receiver" : "Transmitter"%></th>
-          <td><a href=<%= @external_remote_event_url %>><%= @external_remote_event_url %></a></td>
+          <th>Local Event</th>
+          <td>
+            <a href=<%= @local_event_url %>>
+              <%= "Local Event - #{@event_id}" %>
+            </a>
+          </td>
         </tr>
         <tr>
           <th>Gateway</th>
           <td><a href=<%= "#{@remote_event.gateway}/chi/events/" %>><%= @remote_event.gateway %></a></td>
+        </tr>
+        <tr>
+          <th>Corresponding Remote <%= @external_remote_event_type %></th>
+          <td>
+            <a href=<%= @external_remote_event_url %>>
+              <%= "Remote #{@external_remote_event_type} Event - #{@remote_event.id}" %>
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <th>External Event</th>
+          <td>
+            <a href=<%= @external_event_url %>>
+              <%= "External Event - #{@event_id}" %>
+            </a>
+          </td>
         </tr>
         <tr>
           <th>Data</th>
