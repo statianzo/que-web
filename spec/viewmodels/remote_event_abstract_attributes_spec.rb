@@ -1,16 +1,18 @@
 require "spec_helper"
 
 describe Que::Web::Viewmodels::RemoteEventAbstractAttributes do
+  let(:scheme) { 'http' }
+  let(:base_url) { 'hello.com' }
   let(:remote_event_data) {
     {
       id: '1',
       type: 'Chi::Remote::Transmitter',
-      gateway: 'http://hello.com',
+      gateway: "#{scheme}://#{base_url}",
       data: { chi_event: { id: '2' } }
     }
   }
   let(:remote_event) { Que::Web::Viewmodels::RemoteEvent.new(remote_event_data) }
-  let(:subject) { Que::Web::Viewmodels::RemoteEventAbstractAttributes.new(remote_event, remote_event_data[:gateway]) }
+  let(:subject) { Que::Web::Viewmodels::RemoteEventAbstractAttributes.new(remote_event, { scheme: scheme, base_url: base_url }) }
   let(:event_id) { remote_event_data[:data][:chi_event][:id] }
   let(:external_remote_event_type) { 'Receiver' }
   let(:external_remote_event_url) do

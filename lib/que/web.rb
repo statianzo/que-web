@@ -73,7 +73,8 @@ module Que
         redirect to "", 303
       else
         @remote_event = Viewmodels::RemoteEvent.new(remote_events.first)
-        @abstract_attributes = Viewmodels::RemoteEventAbstractAttributes.new(@remote_event, request.base_url)
+        @abstract_attributes =
+          Viewmodels::RemoteEventAbstractAttributes.new(@remote_event, { base_url: request.base_url, scheme: request.scheme })
         erb :show_remote_event
       end
     end

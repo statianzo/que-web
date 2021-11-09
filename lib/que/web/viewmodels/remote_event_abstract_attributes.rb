@@ -5,9 +5,9 @@ module Que::Web::Viewmodels
   )
     TRANSMITTER_TYPE = "Chi::Remote::Transmitter"
 
-    def initialize(remote_event, request_base_url)
+    def initialize(remote_event, request_opts)
       @remote_event = remote_event
-      @request_base_url = request_base_url
+      @request_opts = request_opts
 
       self[:external_remote_event_type] = remote_event_is_transmitter? ? "Receiver" : "Transmitter"
       self[:external_remote_event_url] = generate_external_remote_event_url
@@ -36,8 +36,8 @@ module Que::Web::Viewmodels
       if remote_event_is_transmitter?
         @remote_event.gateway
       else
-        tld = @request_base_url.split('.').last
-        "http://#{@remote_event.gateway.gsub('_', '-')}.homestars.#{tld}"
+        tld = @request_opts[:base_url].split('.').last
+        "#{@request_opts[:scheme]}://#{@remote_event.gateway.gsub('_', '-')}.homestars.#{tld}"
       end
     end
 
