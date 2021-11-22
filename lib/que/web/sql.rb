@@ -175,4 +175,10 @@ Que::Web::SQL = {
     WHERE id = $1::uuid
     LIMIT 1
   SQL
+  fetch_remote_event: <<-SQL.freeze,
+    SELECT *
+    FROM chi_remote_events
+    WHERE id = $1::uuid
+    LIMIT 1
+  SQL
 }.freeze
