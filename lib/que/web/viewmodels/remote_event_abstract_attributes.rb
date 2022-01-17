@@ -1,7 +1,7 @@
 module Que::Web::Viewmodels
   class RemoteEventAbstractAttributes < Struct.new(
     :external_remote_event_type, :external_remote_event_url,
-    :local_event_url, :external_event_url, :event_id
+    :local_event_url, :external_event_url, :event_id, :gateway
   )
     TRANSMITTER_TYPE = "Chi::Remote::Transmitter"
 
@@ -14,6 +14,7 @@ module Que::Web::Viewmodels
       self[:local_event_url] = generate_local_event_url
       self[:external_event_url] = generate_external_event_url
       self[:event_id] = event_id_from_remote_data
+      self[:gateway] = remote_event_gateway_base_url
     end
 
     private
