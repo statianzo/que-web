@@ -4,8 +4,10 @@ GEM
     erubis (2.7.0)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
+    nio4r (2.5.8)
     pg (1.0.0)
-    puma (3.12.6)
+    puma (4.3.12)
+      nio4r (~> 2.0)
     que (0.14.2)
     que-web (0.7.0)
       erubis
