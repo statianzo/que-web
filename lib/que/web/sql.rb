@@ -110,9 +110,11 @@ Que::Web::SQL = {
       FROM pg_locks
       WHERE locktype = 'advisory'
     ) locks ON (que_jobs.id=locks.job_id)
+    LEFT JOIN chi_remote_events on (que_jobs.args->>0)::uuid = chi_remote_events.id
     WHERE locks.job_id IS NULL
       AND error_count > 0
       AND finished_at is NULL
+      AND chi_remote_events.processed_at IS NULL
       AND (
         job_class ILIKE ($3)
         OR que_jobs.args #>> '{0, job_class}' ILIKE ($3)
