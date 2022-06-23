@@ -25,12 +25,20 @@
   margin: 0;
 }
 
-.dashboard-stat.scheduled {
-  background: #828E8C;
+.dashboard-stat.failed {
+  background: #d65c3b;
 }
 
 .dashboard-stat.running {
   background: #CFD0C1;
+}
+
+.dashboard-stat.queued {
+  background: #b8b9ac;
+}
+
+.dashboard-stat.scheduled {
+  background: #828E8C;
 }
 
 .dashboard-stat.failing {

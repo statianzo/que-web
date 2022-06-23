@@ -102,12 +102,28 @@ module Que
       erb :errored
     end
 
+    get "/queued" do
+      stats = Que.execute SQL[:dashboard_stats], [search]
+      pager = get_pager stats[0][:queued]
+      queued_jobs = Que.execute SQL[:queued_jobs], [pager.page_size, pager.offset, search]
+      @list = Viewmodels::JobList.new(queued_jobs, pager)
+      erb :queued
+    end
+
     get "/scheduled" do
       stats = Que.execute SQL[:dashboard_stats], [search]
       pager = get_pager stats[0][:scheduled]
       scheduled_jobs = Que.execute SQL[:scheduled_jobs], [pager.page_size, pager.offset, search]
       @list = Viewmodels::JobList.new(scheduled_jobs, pager)
       erb :scheduled
+    end
+
+    get "/failed" do
+      stats = Que.execute SQL[:dashboard_stats], [search]
+      pager = get_pager stats[0][:failed]
+      failed_jobs = Que.execute SQL[:failed_jobs], [pager.page_size, pager.offset, search]
+      @list = Viewmodels::JobList.new(failed_jobs, pager)
+      erb :failed
     end
 
     get "/jobs/:id" do |id|

@@ -17,6 +17,29 @@
       </div>
     </div>
   </a>
+   <a class="small-12 large-6 columns" href="<%= link_to 'queued' %>">
+    <div class="dashboard-stat queued">
+      <div class="cell">
+        <h2>Queued</h2>
+        <span class="dashboard-value">
+          <%= @dashboard.queued %>
+        </span>
+      </div>
+    </div>
+  </a>
+</div>
+
+<div class="row">
+  <a class="small-12 large-6 columns" href="<%= link_to 'scheduled' %>">
+    <div class="dashboard-stat scheduled">
+      <div class="cell">
+        <h2>Scheduled</h2>
+        <span class="dashboard-value">
+          <%= @dashboard.scheduled %>
+        </span>
+      </div>
+    </div>
+  </a>
   <a class="small-12 large-6 columns" href="<%= link_to 'failing' %>">
     <div class="dashboard-stat failing">
       <div class="cell">
@@ -28,13 +51,14 @@
     </div>
   </a>
 </div>
+
 <div class="row">
-  <a class="small-12 large-6 columns" href="<%= link_to 'scheduled' %>">
-    <div class="dashboard-stat scheduled">
+  <a class="small-12 large-6 columns" href="<%= link_to 'failed' %>">
+    <div class="dashboard-stat failed">
       <div class="cell">
-        <h2>Scheduled</h2>
+        <h2>Failed</h2>
         <span class="dashboard-value">
-          <%= @dashboard.scheduled %>
+          <%= @dashboard.failed %>
         </span>
       </div>
     </div>
