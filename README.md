@@ -1,8 +1,8 @@
-# que-web [![Build Status](https://travis-ci.org/statianzo/que-web.svg?branch=master)](https://travis-ci.org/statianzo/que-web)
+# que-web
 
-que-web is a web UI to the [Que](https://github.com/chanks/que) job queue.
+que-web is a web UI to the [Que](https://github.com/chanks/que) job queue customized for Chi
 
-![Que Web](https://raw.githubusercontent.com/statianzo/que-web/master/doc/queweb.png)
+![Que Web](doc/queweb.png)
 
 ## Installation
 
