@@ -47,7 +47,7 @@ Que::Web::SQL = {
     coalesce(sum((COALESCE(locks.job_id::varchar, finished_at::varchar, expired_at::varchar) is NULL AND run_at <= now())::int), 0) AS queued,
     coalesce(sum((COALESCE(locks.job_id::varchar, finished_at::varchar, expired_at::varchar) is NULL AND run_at > now() AND (error_count = 0 OR chi_remote_events.processed_at IS NOT NULL))::int), 0) AS scheduled,
     coalesce(sum((COALESCE(locks.job_id::varchar, finished_at::varchar, expired_at::varchar, chi_remote_events.processed_at::varchar) is NULL AND chi_remote_events.id is NOT NULL AND error_count > 0 AND run_at > now())::int), 0) AS failing,
-    coalesce(sum((error_count > 0 AND finished_at is NULL)::int), 0) AS errored,
+    coalesce(sum((error_count > 0 AND finished_at is NOT NULL)::int), 0) AS errored,
     coalesce(sum((locks.job_id IS NULL AND expired_at is NOT NULL)::int), 0) AS failed
     FROM que_jobs
     LEFT JOIN (
