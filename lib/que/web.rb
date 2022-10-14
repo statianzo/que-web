@@ -21,8 +21,8 @@ module Que
     end
 
     get "/events" do
-      stats = Que.execute SQL[:event_dashboard_stats], [search]
-      @events = Viewmodels::EventDashboard.new(stats[0])
+      stats = get_totals
+      @events = Viewmodels::EventDashboard.new(stats)
       erb :events
     end
 
@@ -43,8 +43,8 @@ module Que
     end
 
     get "/chi_events" do
-      stats = Que.execute SQL[:event_dashboard_stats], [search]
-      pager = get_pager stats[0][:total]
+      stats = get_totals
+      pager = get_pager stats[:total]
       events = Que.execute SQL[:chi_events], [pager.page_size, pager.offset, search]
       @list = Viewmodels::EventList.new(events, pager)
       erb :chi_events
@@ -59,8 +59,8 @@ module Que
     end
 
     get "/chi_remote_events" do
-      stats = Que.execute SQL[:event_dashboard_stats], [search]
-      pager = get_pager stats[0][:remote]
+      stats = get_totals
+      pager = get_pager stats[:remote]
       events = Que.execute SQL[:chi_remote_events], [pager.page_size, pager.offset, search]
       @list = Viewmodels::RemoteEventList.new(events, pager)
       erb :chi_remote_events
@@ -219,6 +219,13 @@ module Que
     def get_pager(record_count)
       page = (params[:page] || 1).to_i
       Pager.new(page, PAGE_SIZE, record_count)
+    end
+
+    def get_totals
+      {
+        total:  Que.execute(SQL[:event_count], ['chi_events'])[0][:count],
+        remote: Que.execute(SQL[:event_count], ['chi_remote_events'])[0][:count]
+      }
     end
 
     after { session[FLASH_KEY] = {} if @sweep_flash }

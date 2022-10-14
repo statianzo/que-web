@@ -60,16 +60,15 @@ Que::Web::SQL = {
       job_class ILIKE ($1)
       OR que_jobs.args #>> '{0, job_class}' ILIKE ($1)
   SQL
-  event_dashboard_stats: <<-SQL.freeze,
-    SELECT count(distinct chi_events.id) AS total,
-         count(remote.id)                AS remote
-    FROM chi_events
-    LEFT JOIN (
-      SELECT *
-      FROM chi_remote_events
-    ) remote ON ((remote.data->'chi_event'->>'id')::uuid = chi_events.id)
-    WHERE
-      chi_events.type LIKE ($1)
+  event_count: <<-SQL.freeze,
+    SELECT (CASE WHEN c.reltuples < 0 THEN NULL
+                 WHEN c.relpages = 0 THEN float8 '0'
+                 ELSE c.reltuples / c.relpages END
+      * (pg_catalog.pg_relation_size(c.oid)
+      / pg_catalog.current_setting('block_size')::int)
+      )::bigint AS count
+    FROM  pg_catalog.pg_class c
+    WHERE c.oid = $1::regclass;
   SQL
   chi_events: <<-SQL.freeze,
     SELECT *
