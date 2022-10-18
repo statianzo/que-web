@@ -1,6 +1,5 @@
 class Que::Web::Pager
-  attr_reader :current_page, :page_size, :page_count
-  attr_accessor :total
+  attr_reader :current_page, :page_size, :total, :page_count
 
   def initialize(page_no, page_size, total)
     @current_page = page_no > 1 ? page_no : 1
