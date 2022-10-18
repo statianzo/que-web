@@ -60,16 +60,15 @@ Que::Web::SQL = {
       job_class ILIKE ($1)
       OR que_jobs.args #>> '{0, job_class}' ILIKE ($1)
   SQL
-  event_dashboard_stats: <<-SQL.freeze,
-    SELECT count(distinct chi_events.id) AS total,
-         count(remote.id)                AS remote
-    FROM chi_events
-    LEFT JOIN (
-      SELECT *
-      FROM chi_remote_events
-    ) remote ON ((remote.data->'chi_event'->>'id')::uuid = chi_events.id)
-    WHERE
-      chi_events.type LIKE ($1)
+  event_estimated_count: <<-SQL.freeze,
+    SELECT (CASE WHEN c.reltuples < 0 THEN NULL
+                 WHEN c.relpages = 0 THEN float8 '0'
+                 ELSE c.reltuples / c.relpages END
+      * (pg_catalog.pg_relation_size(c.oid)
+      / pg_catalog.current_setting('block_size')::int)
+      )::bigint AS count
+    FROM  pg_catalog.pg_class c
+    WHERE c.oid = $1::regclass;
   SQL
   chi_events: <<-SQL.freeze,
     SELECT *
@@ -79,6 +78,12 @@ Que::Web::SQL = {
     ORDER BY event_order desc
     LIMIT $1::int
     OFFSET $2::int
+  SQL
+  chi_events_count: <<-SQL.freeze,
+    SELECT COUNT(*)
+    FROM chi_events
+    WHERE
+      type LIKE ($1)
   SQL
   chi_data_events: <<-SQL.freeze,
     SELECT *
@@ -104,6 +109,12 @@ Que::Web::SQL = {
     ORDER BY event_order desc
     LIMIT $1::int
     OFFSET $2::int
+  SQL
+  chi_remote_events_count: <<-SQL.freeze,
+    SELECT COUNT(*)
+    FROM chi_remote_events
+    WHERE
+      type LIKE ($1) or gateway LIKE ($1)
   SQL
   # Failing - Any unfinished/not expired job that is not running, has errors and does not have a completed remote_event and is future scheduled
   failing_jobs: <<-SQL.freeze,
