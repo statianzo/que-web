@@ -46,6 +46,7 @@ module Que
       stats = get_totals
       pager = get_pager stats[:total]
       events = Que.execute SQL[:chi_events], [pager.page_size, pager.offset, search]
+      pager.total = events.length
       @list = Viewmodels::EventList.new(events, pager)
       erb :chi_events
     end
@@ -62,6 +63,7 @@ module Que
       stats = get_totals
       pager = get_pager stats[:remote]
       events = Que.execute SQL[:chi_remote_events], [pager.page_size, pager.offset, search]
+      pager.total = events.length
       @list = Viewmodels::RemoteEventList.new(events, pager)
       erb :chi_remote_events
     end
