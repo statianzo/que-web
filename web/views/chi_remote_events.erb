@@ -15,7 +15,8 @@
           <th>type</th>
           <th>gateway</th>
           <th>event_order</th>
-          <th>remote_event_order</th>
+          <th>remote_order_group_sequence</th>
+          <th>remote_order_group_name</th>
           <th>created_at</th>
           <th>processed_at</th>
         </tr>
@@ -29,7 +30,8 @@
             <td><%= event.type %></td>
             <td><%= event.gateway %></td>
             <td><%= event.event_order %></td>
-            <td><%= event.remote_event_order %></td>
+            <td><%= event.remote_order_group_sequence %></td>
+            <td><%= event.remote_order_group_name %></td>
             <td><%= event.created_at %></td>
             <td><%= event.processed_at %></td>
           </tr>
