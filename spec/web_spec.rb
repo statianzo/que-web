@@ -72,4 +72,20 @@ describe Que::Web::Helpers do
       end
     end
   end
+
+  describe '#relative_time' do
+    it 'renders a Time object as a <time> HTML element' do
+      time = Time.now
+      _(subject.relative_time(time)).must_equal(
+        %Q(<time class="timeago" datetime="#{time.utc.iso8601}">#{time.utc}</time>)
+      )
+    end
+
+    it 'renders a String object without timezone in the format "YYYY-MM-DD HH:MM:SS" (e.g. "2020-09-06 22:17:03") as a <time> HTML element' do
+      time = '2020-09-06 22:17:03'
+      _(subject.relative_time(time)).must_equal(
+        %Q(<time class="timeago" datetime="2020-09-06T22:17:03Z">2020-09-06 22:17:03 UTC</time>)
+      )
+    end
+  end
 end
