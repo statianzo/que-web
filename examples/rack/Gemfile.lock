@@ -12,7 +12,7 @@ GEM
       ruby2_keywords (~> 0.0.1)
     pg (1.2.3)
     que (2.2.0)
-    rack (2.2.4)
+    rack (2.2.6.2)
     rack-protection (3.0.4)
       rack
     ruby2_keywords (0.0.5)
