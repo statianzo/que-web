@@ -13,7 +13,7 @@ GEM
       erubis
       que (~> 0.8)
       sinatra
-    rack (2.2.4)
+    rack (2.2.6.4)
     rack-protection (3.0.4)
       rack
     ruby2_keywords (0.0.5)
