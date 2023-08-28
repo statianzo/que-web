@@ -35,6 +35,10 @@
           <td><pre><%= h JSON.pretty_generate(@job.args) %></pre></td>
         </tr>
         <tr>
+          <th>Kwargs</th>
+          <td><pre><%= h JSON.pretty_generate(@job.kwargs) %></pre></td>
+        </tr>
+        <tr>
           <th>Last Error</th>
           <td>
             <pre><%= h @job.last_error_message %></pre>
