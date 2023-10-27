@@ -178,6 +178,10 @@ module Que
         truncate job.args.map(&:inspect).join(', ')
       end
 
+      def format_kwargs(job)
+        truncate JSON.pretty_generate(job.kwargs)
+      end
+
       def format_error(job)
         return unless job.last_error_message
         line = job.last_error_message.lines.first || ''

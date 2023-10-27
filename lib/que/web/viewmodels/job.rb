@@ -1,8 +1,8 @@
 module Que::Web::Viewmodels
   class Job < Struct.new(
       :priority, :run_at, :id, :job_class, :error_count, :last_error_message,
-      :queue, :last_error_backtrace, :finished_at, :expired_at, :args, :data,
-      :backend_pid)
+      :queue, :last_error_backtrace, :finished_at, :expired_at, :args, :kwargs,
+      :data, :backend_pid)
 
     def initialize(job)
       members.each do |m|

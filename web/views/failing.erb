@@ -16,6 +16,7 @@
           <th>Job</th>
           <th>Queue</th>
           <th>Args</th>
+          <th>Kwargs</th>
           <th>Error</th>
           <th></th>
           <th></th>
@@ -32,6 +33,7 @@
             <td><%= h job.humanized_job_class %></td>
             <td><%= job.queue %></td>
             <td><pre><%= h format_args job %></pre></td>
+            <td><pre><%= h format_kwargs job %></pre></td>
             <td><pre><%= h format_error job %></pre></td>
             <td>
               <form action="<%= link_to "jobs/#{job.id}" %>" method="post">
